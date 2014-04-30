@@ -41,73 +41,71 @@
 		<div class="reveal">
 
 			<div class="slides">
-				<section>
-					<h1>Pallet</h1>
-					<h3>A standard for developing and deploying Web applications</h3>
+				<section data-markdown>
+					<script type='text/template'>
+						# Pallet
+						### A standard for developing and deploying Web applications
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type='text/template'>
+						## Deployment problems
+
+						* Reproducible deployment
+						* Production environment matches development
+						* Clear Dev/Ops boundary
+						* Rolling back to older versions
+						* Scalability
+					</script>
+				</section>
+
+				<section data-markdown>
+					<script type='text/template'>
+						## 12 factor practices
+
+						* [12factor.net](http://12factor.net) - a must-read
+						* All configuration in the environment
+						* Defined application lifecycle
+						<!--- TODO: is this slide needed? Expand with more practices? -->
+					</script>
 				</section>
 
 				<section>
-					<h2>Deployment problems</h2>
-					<p>
-						<ul>
-							<li>Reproducible deployment</li>
-							<li>Production environment matches development</li>
-							<li>Clear Dev/Ops boundary</li>
-							<li>Rolling back to older versions</li>
-							<li>Scalability</li>
-						</ul>
-					</p>
-					<!-- TODO: explain problems on down slides -->
-				</section>
+					<section data-markdown>
+						<script type='text/template'>
+							## Application lifecycle
 
-				<section>
-					<h2>12 factor practices</h2>
-					<p>
-						<ul>
-							<li><a href='http://12factor.net'>http://12factor.net</a></li>
-							<li>All configuration in the environment</li>
-							<li>Defined application lifecycle</li>
-							<!-- TODO: is this slide needed? Expand with more practices? -->
-						</ul>
-					</p>
-				</section>
-
-				<section>
-					<section>
-						<h2>Application lifecycle</h2>
-						<p>
-							<ul>
-								<li>Develop</li>
-								<li>Test</li>
-								<li>Deploy</li>
-								<li>Run</li>
-							</ul>
-						</p>
+							* Develop
+							* Test
+							* Deploy
+							* Run
+						</script>
 					</section>
 
-					<section>
-						<h2>Development</h2>
-						<p>Here be dragons.</p>
-						<p>
+					<section data-markdown>
+						<script type='text/template'>
+							## Development
+
+							Here be dragons.
 							Dragons like:
-							<ul>
-								<li>Root access</li>
-								<li>Making changes <i>everywhere</i></li>
-								<li>Blowing up and starting from scratch</li>
-							</ul>
-						</p>
+
+							* Root access
+							* Making changes _everywhere_
+							* Blowing up and starting from scratch
+						</script>
 					</section>
 
-					<section>
-						<h2>Testing</h2>
-						<p>
-							<ul>
-								<li>Automatic</li>
-								<li>Reproducible</li>
-								<li>Fast</li>
-							</ul>
-						</p>
-					</section>
+					<section data-markdown>
+						<script type='text/template'>
+							## Testing
+
+							* Automatic
+							* Reproducible
+							* Fast
+							</script>
+						</section>
+					</script>
 				</section>
 			</div>
 
