@@ -48,63 +48,101 @@
 					</script>
 				</section>
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Deployment problems
-
-						* Reproducible deployment
-						* Production environment matches development
-						* Clear Dev/Ops boundary
-						* Rolling back to older versions
-						* Scalability
-					</script>
-				</section>
-
-				<section data-markdown>
-					<script type='text/template'>
-						## 12 factor practices
-
-						* [12factor.net](http://12factor.net) - a must-read
-						* All configuration in the environment
-						* Defined application lifecycle
-						<!--- TODO: is this slide needed? Expand with more practices? -->
-					</script>
-				</section>
-
 				<section>
 					<section data-markdown>
 						<script type='text/template'>
-							## Application lifecycle
+							## Usual deployment practices
 
-							* Develop
-							* Test
-							* Deploy
-							* Run
+							* Developing on own machine (or a VM)
+							* Copying code (or source control) to a server
+							* Puppet triggers deployment scripts
+							* Puppet starts or restarts the Web server
+							* Configuration hardcoded or produced by Puppet
+
+							Each of the steps is problematic.
 						</script>
 					</section>
 
 					<section data-markdown>
 						<script type='text/template'>
-							## Development
+							## Developing on a VM
 
-							Here be dragons.
-							Dragons like:
-
-							* Root access
-							* Making changes _everywhere_
-							* Blowing up and starting from scratch
+							Never matches production.
+							* New or changed dependencies
+							* No migration problems
 						</script>
 					</section>
 
 					<section data-markdown>
 						<script type='text/template'>
-							## Testing
+							## Copying code to a server
 
-							* Automatic
-							* Reproducible
-							* Fast
+							* Takes time, may lead to downtime
+							* Can fail (git submodules)
+							* Stale compiled artifacts (*.pyc)
 						</script>
 					</section>
+
+					<section data-markdown>
+						<script type='text/template'>
+							## Deployment
+
+							* Takes a long time, makes Puppet unhappy
+							* Difficult to configure to be once-off <!--- Systems told me -->
+							* Can fail, needing a rollback
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type='text/template'>
+							## Web server
+
+							* Who is responsible for configuration?
+							* Can fail _too_
+							<!--- TODO -->
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type='text/template'>
+							## Configuration
+
+							* Framework-specific Puppet template
+						</script>
+					</section>
+
+					<section data-markdown>
+						<script type='text/template'>
+							## 12 factor
+
+							A lot of this is violating [12 factor](http://12factor.net/) guidelines.
+							Good for you if you can spot the violations!
+						</script>
+					</section>
+				</section>
+
+				<section>
+					<h2>Docker</h2>
+
+					<p>Is the answer to everything!</p>
+
+					<pre><code>
+						docker run containers.company.com/application
+					</code></pre>
+
+					<p class='fragment'>What does this do?</p>
+				</section>
+
+				<section data-markdown>
+					<script type='text/template'>
+						## Application lifecycle
+
+						```
+						docker run containers.company.com/application test
+						docker run containers.company.com/application deploy
+						docker run containers.company.com/application serve
+						```
+					</script>
 				</section>
 			</div>
 
