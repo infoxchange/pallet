@@ -121,16 +121,18 @@
 					</section>
 				</section>
 
-				<section>
-					<h2>Docker</h2>
+				<section data-markdown>
+					<script type='text/template'>
+						## Docker
 
-					<p>Is the answer to everything!</p>
+						Is the answer to everything!
 
-					<pre><code>
+						```
 						docker run containers.company.com/application
-					</code></pre>
+						```
 
-					<p class='fragment'>What does this do?</p>
+						What does this do?
+					</script>
 				</section>
 
 				<!--- TODO: Explain Docker? -->
@@ -175,40 +177,34 @@
 				</section>
 
 				<section>
-					<section>
-						<h2>Forklift</h2>
+					<section data-markdown>
+						<script type='text/template'>
+							## Forklift
 
-						<p>
 							Declare your dependencies:
-							<pre><code>
-								# myapp/forklift.yaml
-								services:
-									- postgres
-									- elasticsearch
-							</code></pre>
-						</p>
-						<p>
+							```
+							# myapp/forklift.yaml
+							services:
+								- postgres
+								- elasticsearch
+							```
+
 							Run the container:
-							<pre><code>
-								forklift containers.company.com/application serve
-							</code></pre>
-						</p>
+							```
+							forklift containers.company.com/application serve
+							```
+						</script>
 					</section>
 
-					<section>
-						<h2>Configuration</h2>
+					<section data-markdown>
+						<script type='text/template'>
+							## Configuration
 
-						<ul>
-							<li>
-								Defaults to services on the local machine
-								<ul><li>PostgreSQL, Elasticsearch, Memcached, etc.</li></ul>
-							</li>
-							<li>
-								All configuration can be overridden:
-							</li>
-						</ul>
-						<!-- TODO: indentation inside -->
-						<pre><code>
+							* Defaults to services on the local machine
+							    * PostgreSQL, Elasticsearch, Memcached, etc.
+							* All configuration can be overridden:
+
+							```
 							# ~/.config/forklift/_default.yaml
 							postgres:
 								port: 5433
@@ -216,41 +212,41 @@
 							# ~/.config/forklift/myapp.yaml
 							environment:
 								DB_LEGACY_URL: postgres://myapp:dieplz@legacy-srv/oldapp_backup_backup
-						</code></pre>
+							```
+						</script>
 					</section>
 				</section>
 
-				<section>
-					<h2>Troubleshooting</h2>
+				<section data-markdown>
+					<script type='text/template'>
+						## Troubleshooting
 
-					<p>How do I <code>ssh</code>?</p>
-					<pre><code>
+						How do I `ssh`?
+
+						```
 						forklift containers.company.com/application sshd \
 							--mount-root /tmp/myapp_root
-					</code></pre>
-					<ul>
-						<li><code>sshd</code> is installed and configured</li>
-						<li><code>sudo</code> is enabled</li>
-						<li>Container filesystem is bind-mounted to the host</li>
-						<li>More magic to make it all work</li>
-					</ul>
+						```
+
+						* `sshd` is installed and configured
+						* `sudo` is enabled
+						* Container filesystem is bind-mounted to the host
+						* More magic to make it all work
+					</script>
 				</section>
 
-				<section>
-					<h2>Whale in the room</h2>
+				<section data-markdown>
+					<script type='text/template'>
+						## Whale in the room
 
-					<ul>
-						<li>
-							<code>docker build</code> is slow
-							<ul>
-								<li>Caching helps, but overhead still present</li>
-							</ul>
-						</li>
-						<li>Entry point is already available</li>
-					</ul>
-					<pre><code>
+						* <code>docker build</code> is slow
+						    * Caching helps, but overhead still present
+						* Entry point is already available
+
+						```
 						forklift ./manage.py run_gunicorn
-					</code></pre>
+						```
+					</script>
 				</section>
 			</div>
 
