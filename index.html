@@ -1,289 +1,289 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>Pallet - a DevOps system standard</title>
+    <title>Pallet - a DevOps system standard</title>
 
-		<meta name="description" content="Pallet - a standard for developing and deploying Web applications">
-		<meta name="author" content="Alexey Kotlyarov">
+    <meta name="description" content="Pallet - a standard for developing and deploying Web applications">
+    <meta name="author" content="Alexey Kotlyarov">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="css/reveal.min.css">
+    <link rel="stylesheet" href="css/theme/default.css" id="theme">
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-		<script>
-			if( window.location.search.match( /print-pdf/gi ) ) {
-				var link = document.createElement( 'link' );
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'css/print/pdf.css';
-				document.getElementsByTagName( 'head' )[0].appendChild( link );
-			}
-		</script>
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
 
-	<body>
+  <body>
 
-		<div class="reveal">
+    <div class="reveal">
 
-			<div class="slides">
-				<section data-markdown>
-					<script type='text/template'>
-						# Pallet
-						### A standard for developing and deploying Web applications
-					</script>
-				</section>
+      <div class="slides">
+        <section data-markdown>
+          <script type='text/template'>
+            # Pallet
+            ### A standard for developing and deploying Web applications
+          </script>
+        </section>
 
-				<section>
-					<section data-markdown>
-						<script type='text/template'>
-							## Usual deployment practices
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Usual deployment practices
 
-							* Developing on own machine (or a VM)
-							* Copying code (or source control) to a server
-							* Puppet triggers deployment scripts
-							* Puppet starts or restarts the Web server
-							* Configuration hardcoded or produced by Puppet
+              * Developing on own machine (or a VM)
+              * Copying code (or source control) to a server
+              * Puppet triggers deployment scripts
+              * Puppet starts or restarts the Web server
+              * Configuration hardcoded or produced by Puppet
 
-							Each of the steps is problematic.
-						</script>
-					</section>
+              Each of the steps is problematic.
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Developing on a VM
+          <section data-markdown>
+            <script type='text/template'>
+              ## Developing on a VM
 
-							Never matches production.
-							* New or changed dependencies
-							* No migration problems
-						</script>
-					</section>
+              Never matches production.
+              * New or changed dependencies
+              * No migration problems
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Copying code to a server
+          <section data-markdown>
+            <script type='text/template'>
+              ## Copying code to a server
 
-							* Takes time, may lead to downtime
-							* Can fail (git submodules)
-							* Stale compiled artifacts (*.pyc)
-						</script>
-					</section>
+              * Takes time, may lead to downtime
+              * Can fail (git submodules)
+              * Stale compiled artifacts (*.pyc)
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Deployment
+          <section data-markdown>
+            <script type='text/template'>
+              ## Deployment
 
-							* Takes a long time, makes Puppet unhappy
-							* Difficult to configure to be once-off <!--- Systems told me -->
-							* Can fail, needing a rollback
-						</script>
-					</section>
+              * Takes a long time, makes Puppet unhappy
+              * Difficult to configure to be once-off <!--- Systems told me -->
+              * Can fail, needing a rollback
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Web server
+          <section data-markdown>
+            <script type='text/template'>
+              ## Web server
 
-							* Who is responsible for configuration?
-							* Can fail _too_
-							<!--- TODO -->
-						</script>
-					</section>
+              * Who is responsible for configuration?
+              * Can fail _too_
+              <!--- TODO -->
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Configuration
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration
 
-							* Framework-specific Puppet template
-						</script>
-					</section>
+              * Framework-specific Puppet template
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## 12 factor
+          <section data-markdown>
+            <script type='text/template'>
+              ## 12 factor
 
-							A lot of this is violating [12 factor](http://12factor.net/) guidelines.
-							Good for you if you can spot the violations!
-						</script>
-					</section>
-				</section>
+              A lot of this is violating [12 factor](http://12factor.net/) guidelines.
+              Good for you if you can spot the violations!
+            </script>
+          </section>
+        </section>
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Docker
+        <section data-markdown>
+          <script type='text/template'>
+            ## Docker
 
-						Is the answer to everything!
+            Is the answer to everything!
 
-						```
-						docker run containers.company.com/application
-						```
+            ```
+            docker run containers.company.com/application
+            ```
 
-						What does this do?
-					</script>
-				</section>
+            What does this do?
+          </script>
+        </section>
 
-				<!--- TODO: Explain Docker? -->
+        <!--- TODO: Explain Docker? -->
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Application lifecycle
+        <section data-markdown>
+          <script type='text/template'>
+            ## Application lifecycle
 
-						```
-						docker run containers.company.com/application test
-						docker run containers.company.com/application deploy
-						docker run containers.company.com/application serve
-						```
-					</script>
-				</section>
+            ```
+            docker run containers.company.com/application test
+            docker run containers.company.com/application deploy
+            docker run containers.company.com/application serve
+            ```
+          </script>
+        </section>
 
-				<!--- TODO: Lifecycle graph -->
+        <!--- TODO: Lifecycle graph -->
 
-				<!--- TODO: Highlight properly -->
-				<section data-markdown>
-					<script type='text/template'>
-						## Running the container
+        <!--- TODO: Highlight properly -->
+        <section data-markdown>
+          <script type='text/template'>
+            ## Running the container
 
-						```
-						docker run \
-							-p 8000:8000 \
-							-e DB_DEFAULT_URL=postgres://myapp-staging:password@db-server:5432/myapp_db_staging \
-							-e SITE_DOMAIN=myapp-staging.company.com \
-							-e SITE_PROTO=https \
-							-e ENVIRONMENT=staging \
-							-e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
-							-v /mnt/docker-storage/myapp:/storage \
-							-v /mnt/docker-static/myapp:/static \
-							-h WHY_ARE_YOU_STILL_READING_THIS \
-							containers.company.com/application \
-							serve
-						```
+            ```
+            docker run \
+              -p 8000:8000 \
+              -e DB_DEFAULT_URL=postgres://myapp-staging:password@db-server:5432/myapp_db_staging \
+              -e SITE_DOMAIN=myapp-staging.company.com \
+              -e SITE_PROTO=https \
+              -e ENVIRONMENT=staging \
+              -e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
+              -v /mnt/docker-storage/myapp:/storage \
+              -v /mnt/docker-static/myapp:/static \
+              -h WHY_ARE_YOU_STILL_READING_THIS \
+              containers.company.com/application \
+              serve
+            ```
 
-						* Puppet can template this as an init script
-						* What do developers do?
-					</script>
-				</section>
+            * Puppet can template this as an init script
+            * What do developers do?
+          </script>
+        </section>
 
-				<section>
-					<section data-markdown>
-						<script type='text/template'>
-							## Forklift
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Forklift
 
-							Declare your dependencies:
-							```
-							# myapp/forklift.yaml
-							services:
-								- postgres
-								- elasticsearch
-							```
+              Declare your dependencies:
+              ```
+              # myapp/forklift.yaml
+              services:
+                - postgres
+                - elasticsearch
+              ```
 
-							Run the container:
-							```
-							forklift containers.company.com/application serve
-							```
-						</script>
-					</section>
+              Run the container:
+              ```
+              forklift containers.company.com/application serve
+              ```
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Configuration
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration
 
-							* Defaults to services on the local machine
-							    * PostgreSQL, Elasticsearch, Memcached, etc.
-							* All configuration can be overridden:
+              * Defaults to services on the local machine
+                  * PostgreSQL, Elasticsearch, Memcached, etc.
+              * All configuration can be overridden:
 
-							```
-							# ~/.config/forklift/_default.yaml
-							postgres:
-								port: 5433
+              ```
+              # ~/.config/forklift/_default.yaml
+              postgres:
+                port: 5433
 
-							# ~/.config/forklift/myapp.yaml
-							environment:
-								DB_LEGACY_URL: postgres://myapp:dieplz@legacy-srv/oldapp_backup_backup
-							```
-						</script>
-					</section>
-				</section>
+              # ~/.config/forklift/myapp.yaml
+              environment:
+                DB_LEGACY_URL: postgres://myapp:dieplz@legacy-srv/oldapp_backup_backup
+              ```
+            </script>
+          </section>
+        </section>
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Troubleshooting
+        <section data-markdown>
+          <script type='text/template'>
+            ## Troubleshooting
 
-						How do I `ssh`?
+            How do I `ssh`?
 
-						```
-						forklift containers.company.com/application sshd \
-							--mount-root /tmp/myapp_root
-						```
+            ```
+            forklift containers.company.com/application sshd \
+              --mount-root /tmp/myapp_root
+            ```
 
-						* `sshd` is installed and configured
-						* `sudo` is enabled
-						* Container filesystem is bind-mounted to the host
-						* More magic to make it all work
-					</script>
-				</section>
+            * `sshd` is installed and configured
+            * `sudo` is enabled
+            * Container filesystem is bind-mounted to the host
+            * More magic to make it all work
+          </script>
+        </section>
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Whale in the room
+        <section data-markdown>
+          <script type='text/template'>
+            ## Whale in the room
 
-						* <code>docker build</code> is slow
-						    * Caching helps, but overhead still present
-						* Entry point is already available
+            * <code>docker build</code> is slow
+                * Caching helps, but overhead still present
+            * Entry point is already available
 
-						```
-						forklift ./manage.py run_gunicorn
-						```
-					</script>
-				</section>
-			</div>
+            ```
+            forklift ./manage.py run_gunicorn
+            ```
+          </script>
+        </section>
+      </div>
 
-		</div>
+    </div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.min.js"></script>
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.min.js"></script>
 
-		<script>
+    <script>
 
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
-				// Parallax scrolling
-				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-				// parallaxBackgroundSize: '2100px 900px',
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
 
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-				]
-			});
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
 
-		</script>
+    </script>
 
-	</body>
+  </body>
 </html>
