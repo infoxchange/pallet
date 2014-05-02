@@ -127,7 +127,7 @@
 
             Is the answer to everything!
 
-            ```
+            ```bash
             docker run containers.company.com/application
             ```
 
@@ -141,7 +141,7 @@
           <script type='text/template'>
             ## Application lifecycle
 
-            ```
+            ```bash
             docker run containers.company.com/application test
             docker run containers.company.com/application deploy
             docker run containers.company.com/application serve
@@ -156,7 +156,7 @@
           <script type='text/template'>
             ## Running the container
 
-            ```
+            ```bash
             docker run \
               -p 8000:8000 \
               -e DB_DEFAULT_URL=postgres://myapp-staging:password@db-server:5432/myapp_db_staging \
@@ -182,7 +182,7 @@
               ## Forklift
 
               Declare your dependencies:
-              ```
+              ```yaml
               # myapp/forklift.yaml
               services:
                 - postgres
@@ -190,7 +190,7 @@
               ```
 
               Run the container:
-              ```
+              ```bash
               forklift containers.company.com/application serve
               ```
             </script>
@@ -204,7 +204,7 @@
                   * PostgreSQL, Elasticsearch, Memcached, etc.
               * All configuration can be overridden:
 
-              ```
+              ```yaml
               # ~/.config/forklift/_default.yaml
               postgres:
                 port: 5433
@@ -223,7 +223,7 @@
 
             How do I `ssh`?
 
-            ```
+            ```bash
             forklift containers.company.com/application sshd \
               --mount-root /tmp/myapp_root
             ```
@@ -243,7 +243,7 @@
                 * Caching helps, but overhead still present
             * Entry point is already available
 
-            ```
+            ```bash
             forklift ./manage.py run_gunicorn
             ```
           </script>
