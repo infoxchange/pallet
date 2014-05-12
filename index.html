@@ -133,16 +133,28 @@
 					<p class='fragment'>What does this do?</p>
 				</section>
 
-				<section data-markdown>
-					<script type='text/template'>
-						## Application lifecycle
+				<section>
+					<section data-markdown>
+						<script type='text/template'>
+							## Application lifecycle
 
-						```
-						docker run containers.company.com/application test
-						docker run containers.company.com/application deploy
-						docker run containers.company.com/application serve
-						```
-					</script>
+							```
+							docker run containers.company.com/application test
+							docker run containers.company.com/application deploy
+							docker run containers.company.com/application serve
+							```
+						</script>
+					</section>
+
+					<section>
+						<h2>Fresh deploy</h2>
+
+						<div class='diagram'>
+							Puppet -&gt; Deploy: start
+							Note over Deploy: create database\n schema
+							Deploy --&gt; Puppet: exit
+						</div>
+					</section>
 				</section>
 			</div>
 
@@ -150,6 +162,9 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
+    <script src="raphael/raphael.min.js"></script>
+    <script src="underscore/underscore-min.js"></script>
+    <script src="js-sequence-diagrams/build/sequence-diagram-min.js"></script>
 
 		<script>
 
