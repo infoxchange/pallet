@@ -157,14 +157,36 @@
 						<h2>Fresh deploy</h2>
 
 						<div class='diagram'>
-							Participant Puppet
-							Participant Deploy
-							Participant Serve
 							Puppet-&gt;Deploy: start
 							Note over Deploy: create database\n schema
 							Deploy--&gt;Puppet: exit
 							Puppet-&gt;Serve: start
-							User-&gt;Serve: request
+							Serve--&gt;&gt;Load Balancer: added
+							Load Balancer-&gt;Serve: request
+							Load Balancer-&gt;Serve: request
+						</div>
+					</section>
+
+					<section>
+						<h2>New version</h2>
+
+						<div class='diagram'>
+							Participant Puppet
+							Participant New Deploy
+							Participant Serve 1
+							Participant Serve 2
+							Participant Load Balancer
+							Puppet-&gt;New Deploy: start
+							Note over New Deploy: update database\n schema
+							Load Balancer-&gt;Serve 1: request
+							New Deploy--&gt;Puppet: exit
+							Puppet-&gt;Serve 2: start
+							Serve 2--&gt;&gt;Load Balancer: added
+							Load Balancer-&gt;Serve 2: request
+							Load Balancer-&gt;Serve 1: request
+							Puppet-&gt;Serve 1: kill
+							Serve 1--&gt;&gt;Load Balancer: removed
+							Load Balancer-&gt;Serve 2: request
 						</div>
 					</section>
 				</section>
