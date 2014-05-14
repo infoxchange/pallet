@@ -1,1 +1,1 @@
-reveal.js/js
+bower_components/reveal.js/js

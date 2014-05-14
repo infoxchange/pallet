@@ -17,6 +17,13 @@
 		<link rel="stylesheet" href="css/reveal.min.css">
 		<link rel="stylesheet" href="css/theme/default.css" id="theme">
 
+		<style type="text/css">
+			.diagram {
+				background: white;
+				height: 600px;
+			}
+		</style>
+
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -150,9 +157,14 @@
 						<h2>Fresh deploy</h2>
 
 						<div class='diagram'>
-							Puppet -&gt; Deploy: start
+							Participant Puppet
+							Participant Deploy
+							Participant Serve
+							Puppet-&gt;Deploy: start
 							Note over Deploy: create database\n schema
-							Deploy --&gt; Puppet: exit
+							Deploy--&gt;Puppet: exit
+							Puppet-&gt;Serve: start
+							User-&gt;Serve: request
 						</div>
 					</section>
 				</section>
@@ -162,9 +174,10 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
-    <script src="raphael/raphael.min.js"></script>
-    <script src="underscore/underscore-min.js"></script>
-    <script src="js-sequence-diagrams/build/sequence-diagram-min.js"></script>
+		<script src="bower_components/raphael/raphael-min.js"></script>
+		<script src="bower_components/underscore/underscore.js"></script>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/js-sequence-diagrams/build/sequence-diagram-min.js"></script>
 
 		<script>
 
@@ -193,6 +206,8 @@
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
+
+			$('.diagram').sequenceDiagram({theme: 'hand'});
 
 		</script>
 

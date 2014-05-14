@@ -1,0 +1,10 @@
+{
+  "name": "pallet_presentation",
+  "dependencies": {
+    "jquery": "*",
+    "js-sequence-diagrams": "*",
+    "raphael": "*",
+    "reveal.js": "*",
+    "underscore": "*"
+  }
+}
