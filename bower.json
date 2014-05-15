@@ -1,10 +1,8 @@
 {
   "name": "pallet_presentation",
   "dependencies": {
+    "coffee-script": "*",
     "jquery": "*",
-    "js-sequence-diagrams": "*",
-    "raphael": "*",
-    "reveal.js": "*",
-    "underscore": "*"
+    "reveal.js": "*"
   }
 }

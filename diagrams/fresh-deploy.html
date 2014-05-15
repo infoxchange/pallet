@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Fresh deploy</title>
+
+    <link href='../vendor/jumly/jumly.min.css' rel='stylesheet'/>
+  </head>
+  <body>
+    <div class='diagram'>
+      <script type='text/jumly+sequence'>
+        @found "Puppet", ->
+          @create "Deploy", ->
+            @message "Create database schema"
+            @reply "exit"
+          @create "Serve"
+          @message "add(Serve)", "LoadBalancer"
+      </script>
+    </div>
+
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/coffee-script/extras/coffee-script.js"></script>
+    <script src="../vendor/jumly/jumly.min.js"></script>
+  </body>
+</html>
