@@ -1,227 +1,227 @@
 <!doctype html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-		<title>Pallet - a DevOps system standard</title>
+    <title>Pallet - a DevOps system standard</title>
 
-		<meta name="description" content="Pallet - a standard for developing and deploying Web applications">
-		<meta name="author" content="Alexey Kotlyarov">
+    <meta name="description" content="Pallet - a standard for developing and deploying Web applications">
+    <meta name="author" content="Alexey Kotlyarov">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link href='vendor/jumly/jumly.min.css' rel='stylesheet'/>
-		<link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
-		<link rel="stylesheet" href="bower_components/reveal.js/css/theme/solarized.css" id="theme">
+    <link href='vendor/jumly/jumly.min.css' rel='stylesheet'/>
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/solarized.css" id="theme">
 
-		<style type="text/css">
-			.reveal div .diagram {
-				font-size: 20px !important;
-			}
-		</style>
+    <style type="text/css">
+      .reveal div .diagram {
+        font-size: 20px !important;
+      }
+    </style>
 
-		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css">
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css">
 
-		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-		<script>
-			if( window.location.search.match( /print-pdf/gi ) ) {
-				var link = document.createElement( 'link' );
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'css/print/pdf.css';
-				document.getElementsByTagName( 'head' )[0].appendChild( link );
-			}
-		</script>
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
 
-		<!--[if lt IE 9]>
-		<script src="bower_components/reveal.js/lib/js/html5shiv.js"></script>
-		<![endif]-->
-	</head>
+    <!--[if lt IE 9]>
+    <script src="bower_components/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
 
-	<body>
+  <body>
 
-		<div class="reveal">
+    <div class="reveal">
 
-			<div class="slides">
-				<section data-markdown>
-					<script type='text/template'>
-						# Pallet
-						### A standard for developing and deploying Web applications
-					</script>
-				</section>
+      <div class="slides">
+        <section data-markdown>
+          <script type='text/template'>
+            # Pallet
+            ### A standard for developing and deploying Web applications
+          </script>
+        </section>
 
-				<section>
-					<section data-markdown>
-						<script type='text/template'>
-							## Usual deployment practices
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Usual deployment practices
 
-							* Developing on own machine (or a VM)
-							* Copying code (or source control) to a server
-							* Puppet triggers deployment scripts
-							* Puppet starts or restarts the Web server
-							* Configuration hardcoded or produced by Puppet
+              * Developing on own machine (or a VM)
+              * Copying code (or source control) to a server
+              * Puppet triggers deployment scripts
+              * Puppet starts or restarts the Web server
+              * Configuration hardcoded or produced by Puppet
 
-							Each of the steps is problematic.
-						</script>
-					</section>
+              Each of the steps is problematic.
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Developing on a VM
+          <section data-markdown>
+            <script type='text/template'>
+              ## Developing on a VM
 
-							Never matches production.
-							* New or changed dependencies
-							* No migration problems
-						</script>
-					</section>
+              Never matches production.
+              * New or changed dependencies
+              * No migration problems
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Copying code to a server
+          <section data-markdown>
+            <script type='text/template'>
+              ## Copying code to a server
 
-							* Takes time, may lead to downtime
-							* Can fail (git submodules)
-							* Stale compiled artifacts (*.pyc)
-						</script>
-					</section>
+              * Takes time, may lead to downtime
+              * Can fail (git submodules)
+              * Stale compiled artifacts (*.pyc)
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Deployment
+          <section data-markdown>
+            <script type='text/template'>
+              ## Deployment
 
-							* Takes a long time, makes Puppet unhappy
-							* Difficult to configure to be once-off <!--- Systems told me -->
-							* Can fail, needing a rollback
-						</script>
-					</section>
+              * Takes a long time, makes Puppet unhappy
+              * Difficult to configure to be once-off <!--- Systems told me -->
+              * Can fail, needing a rollback
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Web server
+          <section data-markdown>
+            <script type='text/template'>
+              ## Web server
 
-							* Who is responsible for configuration?
-							* Can fail _too_
-							<!--- TODO -->
-						</script>
-					</section>
+              * Who is responsible for configuration?
+              * Can fail _too_
+              <!--- TODO -->
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## Configuration
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration
 
-							* Framework-specific Puppet template
-						</script>
-					</section>
+              * Framework-specific Puppet template
+            </script>
+          </section>
 
-					<section data-markdown>
-						<script type='text/template'>
-							## 12 factor
+          <section data-markdown>
+            <script type='text/template'>
+              ## 12 factor
 
-							A lot of this is violating [12 factor](http://12factor.net/) guidelines.
-							Good for you if you can spot the violations!
-						</script>
-					</section>
-				</section>
+              A lot of this is violating [12 factor](http://12factor.net/) guidelines.
+              Good for you if you can spot the violations!
+            </script>
+          </section>
+        </section>
 
-				<section>
-					<h2>Docker</h2>
+        <section>
+          <h2>Docker</h2>
 
-					<p>Is the answer to everything!</p>
+          <p>Is the answer to everything!</p>
 
-					<pre><code>
-						docker run containers.company.com/application
-					</code></pre>
+          <pre><code>
+            docker run containers.company.com/application
+          </code></pre>
 
-					<p class='fragment'>What does this do?</p>
-				</section>
+          <p class='fragment'>What does this do?</p>
+        </section>
 
-				<section>
-					<section data-markdown>
-						<script type='text/template'>
-							## Application lifecycle
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Application lifecycle
 
-							```
-							docker run containers.company.com/application test
-							docker run containers.company.com/application deploy
-							docker run containers.company.com/application serve
-							```
-						</script>
-					</section>
+              ```
+              docker run containers.company.com/application test
+              docker run containers.company.com/application deploy
+              docker run containers.company.com/application serve
+              ```
+            </script>
+          </section>
 
-					<section>
-						<h2>Fresh deploy</h2>
+          <section>
+            <h2>Fresh deploy</h2>
 
-						<iframe src='diagrams/fresh-deploy.html' width='100%' height='700px'></iframe>
-					</section>
+            <iframe src='diagrams/fresh-deploy.html' width='100%' height='700px'></iframe>
+          </section>
 
-					<section>
-						<h2>New version</h2>
+          <section>
+            <h2>New version</h2>
 
-						<iframe src='diagrams/new-version.html' width='100%' height='700px'></iframe>
-						<div class='diagram'>
-							Participant Puppet
-							Participant New Deploy
-							Participant Serve 1
-							Participant Serve 2
-							Participant Load Balancer
-							Puppet-&gt;New Deploy: start
-							Note over New Deploy: update database\n schema
-							Load Balancer-&gt;Serve 1: request
-							New Deploy--&gt;Puppet: exit
-							Puppet-&gt;Serve 2: start
-							Serve 2--&gt;&gt;Load Balancer: added
-							Load Balancer-&gt;Serve 2: request
-							Load Balancer-&gt;Serve 1: request
-							Puppet-&gt;Serve 1: kill
-							Serve 1--&gt;&gt;Load Balancer: removed
-							Load Balancer-&gt;Serve 2: request
-						</div>
-					</section>
-				</section>
-			</div>
+            <iframe src='diagrams/new-version.html' width='100%' height='700px'></iframe>
+            <div class='diagram'>
+              Participant Puppet
+              Participant New Deploy
+              Participant Serve 1
+              Participant Serve 2
+              Participant Load Balancer
+              Puppet-&gt;New Deploy: start
+              Note over New Deploy: update database\n schema
+              Load Balancer-&gt;Serve 1: request
+              New Deploy--&gt;Puppet: exit
+              Puppet-&gt;Serve 2: start
+              Serve 2--&gt;&gt;Load Balancer: added
+              Load Balancer-&gt;Serve 2: request
+              Load Balancer-&gt;Serve 1: request
+              Puppet-&gt;Serve 1: kill
+              Serve 1--&gt;&gt;Load Balancer: removed
+              Load Balancer-&gt;Serve 2: request
+            </div>
+          </section>
+        </section>
+      </div>
 
-		</div>
+    </div>
 
-		<script src="bower_components/reveal.js/lib/js/head.min.js"></script>
-		<script src="bower_components/reveal.js/js/reveal.min.js"></script>
-		<script src="bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="bower_components/coffee-script/extras/coffee-script.js"></script>
-		<script src="vendor/jumly/jumly.min.js"></script>
+    <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script src="bower_components/reveal.js/js/reveal.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/coffee-script/extras/coffee-script.js"></script>
+    <script src="vendor/jumly/jumly.min.js"></script>
 
-		<script>
+    <script>
 
-			// Full list of configuration options available here:
-			// https://github.com/hakimel/reveal.js#configuration
-			Reveal.initialize({
-				controls: true,
-				progress: true,
-				history: true,
-				center: true,
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
-				// Parallax scrolling
-				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-				// parallaxBackgroundSize: '2100px 900px',
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
 
-				// Optional libraries used to extend on reveal.js
-				dependencies: [
-					{ src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
-				]
-			});
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
 
-		</script>
+    </script>
 
-	</body>
+  </body>
 </html>
