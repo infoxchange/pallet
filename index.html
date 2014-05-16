@@ -129,23 +129,25 @@
         </section>
 
         <section>
-          <h2>Docker</h2>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Docker
 
-          <p>Is the answer to everything!</p>
+              Is the answer to everything!
 
-          <pre><code>
-            docker run containers.company.com/application
-          </code></pre>
+              ```bash
+              docker run containers.company.com/application
+              ```
 
-          <p class='fragment'>What does this do?</p>
-        </section>
+              What does this do?
+            </script>
+          </section>
 
-        <section>
           <section data-markdown>
             <script type='text/template'>
               ## Application lifecycle
 
-              ```
+              ```bash
               docker run containers.company.com/application test
               docker run containers.company.com/application deploy
               docker run containers.company.com/application serve
@@ -163,25 +165,104 @@
             <h2>New version</h2>
 
             <iframe src='diagrams/new-version.html' width='100%' height='700px'></iframe>
-            <div class='diagram'>
-              Participant Puppet
-              Participant New Deploy
-              Participant Serve 1
-              Participant Serve 2
-              Participant Load Balancer
-              Puppet-&gt;New Deploy: start
-              Note over New Deploy: update database\n schema
-              Load Balancer-&gt;Serve 1: request
-              New Deploy--&gt;Puppet: exit
-              Puppet-&gt;Serve 2: start
-              Serve 2--&gt;&gt;Load Balancer: added
-              Load Balancer-&gt;Serve 2: request
-              Load Balancer-&gt;Serve 1: request
-              Puppet-&gt;Serve 1: kill
-              Serve 1--&gt;&gt;Load Balancer: removed
-              Load Balancer-&gt;Serve 2: request
-            </div>
           </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Running the container
+
+            ```bash
+            docker run \
+              -p 8000:8000 \
+              -e DB_DEFAULT_URL=postgres://myapp-staging:password@db-server:5432/myapp_db_staging \
+              -e SITE_DOMAIN=myapp-staging.company.com \
+              -e SITE_PROTO=https \
+              -e ENVIRONMENT=staging \
+              -e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
+              -v /mnt/docker-storage/myapp:/storage \
+              -v /mnt/docker-static/myapp:/static \
+              -h WHY_ARE_YOU_STILL_READING_THIS \
+              containers.company.com/application \
+              serve
+            ```
+
+            * Puppet can template this as an init script
+            * What do developers do?
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Forklift
+
+              Declare your dependencies:
+              ```yaml
+              # myapp/forklift.yaml
+              services:
+                - postgres
+                - elasticsearch
+              ```
+
+              Run the container:
+              ```bash
+              forklift containers.company.com/application serve
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration
+
+              * Defaults to services on the local machine
+                  * PostgreSQL, Elasticsearch, Memcached, etc.
+              * All configuration can be overridden:
+
+              ```yaml
+              # ~/.config/forklift/_default.yaml
+              postgres:
+                port: 5433
+
+              # ~/.config/forklift/myapp.yaml
+              environment:
+                DB_LEGACY_URL: postgres://myapp:dieplz@legacy-srv/oldapp_backup_backup
+              ```
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Troubleshooting
+
+            How do I `ssh`?
+
+            ```bash
+            forklift containers.company.com/application sshd \
+              --mount-root /tmp/myapp_root
+            ```
+
+            * `sshd` is installed and configured
+            * `sudo` is enabled
+            * Container filesystem is bind-mounted to the host
+            * More magic to make it all work
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Whale in the room
+
+            * <code>docker build</code> is slow
+                * Caching helps, but overhead still present
+            * Entry point is already available
+
+            ```bash
+            forklift ./manage.py run_gunicorn
+            ```
+          </script>
         </section>
       </div>
 
