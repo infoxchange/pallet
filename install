@@ -1,0 +1,3 @@
+#!/bin/sh -e
+npm install bower
+./node_modules/.bin/bower install
