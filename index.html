@@ -14,7 +14,6 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link href='vendor/jumly/jumly.min.css' rel='stylesheet'/>
     <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
     <link rel="stylesheet" href="bower_components/reveal.js/css/theme/solarized.css" id="theme">
 
@@ -129,21 +128,25 @@
           </section>
         </section>
 
+        <section data-markdown>
+          <script type='text/template'>
+            ## Docker
+
+            Is the answer to everything!
+
+            ```bash
+            docker run containers.company.com/application
+            ```
+
+            * What does this do? (Probably starts a server)
+            * What is the port to connect to?
+            * How do I specify the database to connect to?
+            * Can I have a cluster of these?
+            * How to hot-deploy?
+          </script>
+        </section>
+
         <section>
-          <section data-markdown>
-            <script type='text/template'>
-              ## Docker
-
-              Is the answer to everything!
-
-              ```bash
-              docker run containers.company.com/application
-              ```
-
-              What does this do?
-            </script>
-          </section>
-
           <section data-markdown>
             <script type='text/template'>
               ## Application lifecycle
@@ -171,6 +174,17 @@
 
         <section data-markdown>
           <script type='text/template'>
+            ## Standartised environment
+
+            * Port 8000
+            * `/storage` is persistent storage
+            * Configuration by environment variables
+            * Service links by environment variables
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
             ## Running the container
 
             ```bash
@@ -182,7 +196,6 @@
               -e ENVIRONMENT=staging \
               -e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
               -v /mnt/docker-storage/myapp:/storage \
-              -v /mnt/docker-static/myapp:/static \
               -h WHY_ARE_YOU_STILL_READING_THIS \
               containers.company.com/application \
               serve
@@ -219,6 +232,7 @@
 
               * Defaults to services on the local machine
                   * PostgreSQL, Elasticsearch, Memcached, etc.
+              * Will run services in containers if images are available
               * All configuration can be overridden:
 
               ```yaml
@@ -245,7 +259,7 @@
               --mount-root /tmp/myapp_root
             ```
 
-            * `sshd` is installed and configured
+            * SSH daemon is installed and configured
             * `sudo` is enabled
             * Container filesystem is bind-mounted to the host
             * More magic to make it all work
@@ -273,7 +287,6 @@
     <script src="bower_components/reveal.js/js/reveal.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/coffee-script/extras/coffee-script.js"></script>
-    <script src="vendor/jumly/jumly.min.js"></script>
 
     <script>
 
