@@ -182,6 +182,99 @@
             * Service links by environment variables
           </script>
         </section>
+        
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Clustering / Orchestration
+
+              * Many options (CoreOS+fleet, Decking, docker-cluster...)
+              * More every day (!)
+              * Strong focus on systemd
+              * Was not practical for our use-case
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Init script
+
+              * Started as entirely bash
+              * Now calls out to ruby script for most functionality
+              * Uses swipe.ly [docker-api](https://github.com/swipely/docker-api) rubygem
+              * [Serf](http://www.serfdom.io/) for cluster comms
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration in Hiera
+
+              ```yaml
+                myapp:
+                  image: 'containers.company.com/myapp'
+                  tag: v0.11.3
+                  ports:
+                    - 10000:8000
+                  environment: prod
+                  site_domain: public-facing-url.io
+                  weight: 2
+                  minservers: 2
+                  ...
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Puppet
+
+              * Deploys configuration for init script
+              * Standard Service{} type
+              * Calls _status_ on init script
+
+              ```bash
+              you@host-01:~  # /etc/init.d/docker-myapp status
+              Container:            myapp
+              Requested tag:        v0.11.3
+              Optimal status:       true
+              Locked from starting: false
+              Running on this host: true
+              Tag on this host:     v0.11.3
+              Running on:           host-01 (tag v0.11.3), host-03 (tag v0.11.3)
+              Deploying on:
+              Command running on:
+              ```
+              * Return code non-zero on non-optimal
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Puppet continued
+
+              * Also configures
+                * PostgreSQL database servers + ACLs
+                * nginx load balancers
+                * Persistent storage for containers + ACLs
+                * Docker images from registry
+
+              * All from Hiera
+              ```yaml
+                site_common:
+                  db_default_type: 'postgres'
+                  db_default_port: 5432
+                  db_default_host: postgres-cluster-vip.company.com
+                  volumes:
+                    - storage:/storage:rw
+                  site_protocol: https
+                  ...
+              ```
+              * What it was intended for
+              * Every application uses same Puppet classes
+            </script>
+          </section>
+        </section>
 
         <section data-markdown>
           <script type='text/template'>
@@ -201,7 +294,7 @@
               serve
             ```
 
-            * Puppet can template this as an init script
+            * Puppet supplies configuration, init script runs
             * What do developers do?
           </script>
         </section>
