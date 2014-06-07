@@ -179,7 +179,9 @@
             * Port 8000
             * `/storage` is persistent storage
             * Configuration by environment variables
+              * URL, Environment, Number of workers, ...
             * Service links by environment variables
+              * PostgreSQL URL, Elasticsearch, ...
           </script>
         </section>
         
@@ -213,11 +215,11 @@
               ```yaml
                 myapp:
                   image: 'containers.company.com/myapp'
-                  tag: v0.11.3
+                  tag: 'v0.11.3'
                   ports:
                     - 10000:8000
-                  environment: prod
-                  site_domain: public-facing-url.io
+                  environment: 'prod'
+                  site_domain: 'public-facing-url.io'
                   weight: 2
                   minservers: 2
                   ...
@@ -264,16 +266,26 @@
                 site_common:
                   db_default_type: 'postgres'
                   db_default_port: 5432
-                  db_default_host: postgres-cluster-vip.company.com
+                  db_default_host: 'postgres-cluster-vip.company.com'
                   volumes:
-                    - storage:/storage:rw
-                  site_protocol: https
+                    - 'storage:/storage:rw'
+                  site_protocol: 'https'
                   ...
               ```
-              * What it was intended for
-              * Every application uses same Puppet classes
             </script>
           </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Happy Ops
+
+              * Puppet being used for its strengths
+              * Every application now uses the same Puppet classes
+              * Infrastructure changes easier
+              * Every app gets new features automatically
+            </script>
+          </section>
+
         </section>
 
         <section data-markdown>
