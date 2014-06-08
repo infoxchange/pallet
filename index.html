@@ -170,11 +170,11 @@
               * PostgreSQL URL, Elasticsearch, ...
           </script>
         </section>
-        
+
         <section>
           <section data-markdown>
             <script type='text/template'>
-              ## Orchestration 
+              ## Orchestration
 
               * Many options (CoreOS+fleet, Decking, docker-cluster...)
               * More every day (!)
@@ -188,8 +188,8 @@
               ## Init script
 
               * Started as entirely bash
-              * Now calls out to ruby script for most functionality
-              * Uses swipe.ly [docker-api](https://github.com/swipely/docker-api) rubygem
+              * Now calls out to Ruby script for most functionality
+              * Uses swipe.ly [docker-api](https://github.com/swipely/docker-api) Ruby gem
               * [Serf](http://www.serfdom.io/) for cluster comms
             </script>
           </section>
@@ -218,8 +218,8 @@
               ## Puppet
 
               * Deploys configuration for init script
-              * Standard Service{} type
-              * Calls _status_ on init script
+              * Standard `Service{}` type
+              * Calls `status` on init script
 
               ```bash
               you@host-01:~  # /etc/init.d/docker-myapp status
@@ -243,7 +243,7 @@
 
               * Also configures
                 * PostgreSQL database servers + ACLs
-                * nginx load balancers
+                * Nginx load balancers
                 * Persistent storage for containers + ACLs
                 * Docker images from registry
 
