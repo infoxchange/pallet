@@ -57,73 +57,59 @@
         <section>
           <section data-markdown>
             <script type='text/template'>
-              ## Usual deployment practices
+              ## Infoxchange applications
 
-              * Developing on own machine (or a VM)
-              * Copying code (or source control) to a server
-              * Puppet triggers deployment scripts
-              * Puppet starts or restarts the Web server
-              * Configuration hardcoded or produced by Puppet
-
-              Each of the steps is problematic.
+              * Django/Python for new code
+              * Legacy Perl applications tied to Apache
+              * Python ESB ([Zato](https://zato.io))
+              * Wishlist: in-house CI server
+              * Wishlist: Python 3
             </script>
           </section>
 
           <section data-markdown>
             <script type='text/template'>
-              ## Developing on a VM
+              ## Typical Django application
 
-              Never matches production.
+              * Apache `mod_wsgi` as Web server
+              * `virtualenv` for managing Python dependencies
+              * South for database migrations
+              * Problems:
+                * Non-Python libraries (e.g. `libxml`)
+                * Uninstalling (no `pip uninstall`)
+                * Recently, NPM and Bower dependencies
+            </script>
+          </section>
 
-              * New or changed dependencies
-              * No migration problems
+          <!-- TODO: detail old Django manifest -->
+          <section data-markdown>
+            <script type='text/template'>
+              ## Puppet manifests
+
+              * ...
             </script>
           </section>
 
           <section data-markdown>
             <script type='text/template'>
-              ## Copying code to a server
+              ## Development environment
 
-              * Takes time, may lead to downtime
-              * Can fail (git submodules)
-              * Stale compiled artifacts (`*.pyc`)
+              * Puppet-controlled VMs
+              * Use case different from production
+              * Puppet sometimes ruins the developers' work
             </script>
           </section>
 
           <section data-markdown>
             <script type='text/template'>
-              ## Deployment
+              ## Goals
 
-              * Takes a long time, makes Puppet unhappy
-              * Difficult to configure to be once-off <!--- Systems told me -->
-              * Can fail, needing a rollback
-            </script>
-          </section>
+              Inspired by [12 factor](http://12factor.net/)
 
-          <section data-markdown>
-            <script type='text/template'>
-              ## Web server
-
-              * Who is responsible for configuration?
-              * Can fail _too_
-              <!--- TODO -->
-            </script>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ## Configuration
-
-              * Framework-specific Puppet template
-            </script>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ## 12 factor
-
-              A lot of this is violating [12 factor](http://12factor.net/) guidelines.
-              Good for you if you can spot the violations!
+              * Framework-, language-agnostic deployment
+              * Zero downtime deployment
+              * Clustering
+              * Separation of responsibility (Developers vs. Systems)
             </script>
           </section>
         </section>
