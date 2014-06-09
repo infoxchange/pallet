@@ -95,7 +95,7 @@
               ## Puppet manifests
 
               * Declarative language not suited for complex operations
-              * Unclear responsibility boundary between Development and Systems
+              * Unclear responsibility boundary between Dev and Ops
               * Unmaintainable chain of `Exec{}s` and permission changes
               * Deploys require external sites to be available (including production)
             </script>
@@ -120,7 +120,7 @@
               * Framework-, language-agnostic deployment
               * Zero downtime deployment
               * Clustering
-              * Separation of responsibility (Developers vs. Systems)
+              * Separation of responsibility (Dev vs. Ops)
             </script>
           </section>
         </section>
@@ -144,6 +144,7 @@
         </section>
 
         <section>
+          <!-- TODO: LARGER -->
           <section data-markdown>
             <script type='text/template'>
               ## Application lifecycle
@@ -385,12 +386,36 @@
 
         <section data-markdown>
           <script type='text/template'>
-            ## Achievements
+            ## Happy devs
 
             * No deployments failed due to dependencies
             * Seamlessly switched Django to Gunicorn
             * Added [Celery](http://www.celeryproject.org/) to containers without configuration changes
-            * Django, Perl and Drupal applications use the same infrastructure
+          </script>
+        </section>
+        <!-- TODO: Add more -->
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Future plans
+
+              * Inter-application dependencies
+                * Applications as RESTful services
+                * Microservices architecture
+              * Multiple container types for an application
+                * Web server
+                * Background worker
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Questions?
+
+            * [github.com/infoxchange/docker-forklift](https://github.com/infoxchange/docker-forklift)
+            * [ixa.io/slides/forklift](http://ixa.io/slides/forklift)
           </script>
         </section>
 
@@ -407,6 +432,7 @@
               Solving a different, although related, problem
             </script>
           </section>
+          <!-- TODO: Summarise deficiencies on the first slide -->
 
           <section data-markdown>
             <script type='text/template'>
@@ -451,30 +477,6 @@
               http://gaudi.io/
             </script>
           </section>
-        </section>
-
-        <section>
-          <section data-markdown>
-            <script type='text/template'>
-              ## Future plans
-
-              * Inter-application dependencies
-                * Applications as RESTful services
-                * Microservices architecture
-              * Multiple container types for an application
-                * Web server
-                * Background worker
-            </script>
-          </section>
-        </section>
-
-        <section data-markdown>
-          <script type='text/template'>
-            ## Questions?
-
-            * [github.com/infoxchange/docker-forklift](https://github.com/infoxchange/docker-forklift)
-            * [ixa.io/slides/forklift](http://ixa.io/slides/forklift)
-          </script>
         </section>
       </div>
 
