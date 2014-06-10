@@ -1,0 +1,16 @@
+.sequence-diagram {
+	font-size: 20px;
+	line-height: 18px;
+}
+
+.sequence-diagram .self .message {
+	font-size: 14px;
+}
+
+.sequence-diagram .participant {
+	width: 145px;
+}
+
+.sequence-diagram .message.return .name::before {
+	display: none; /* remove 'return' */
+}

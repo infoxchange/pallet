@@ -7,13 +7,14 @@
     <title>New version</title>
 
     <link href='../vendor/jumly/jumly.min.css' rel='stylesheet'/>
+    <link href='style.css' rel='stylesheet'/>
   </head>
   <body>
     <div class='diagram'>
       <script type='text/jumly+sequence'>
         @found "Serve 1"
         @found "Puppet", ->
-          @create "New Deploy", ->
+          @create "Deploy", ->
             @message "Update database schema"
             @reply "exit"
           @create "Serve 2"
