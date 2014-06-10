@@ -21,6 +21,16 @@
       .reveal div .diagram {
         font-size: 20px !important;
       }
+
+      .reveal pre code {
+        font-size: 33px;
+        line-height: 36px;
+      }
+
+      .reveal *[data-state=wideslide] pre {
+        width: 140%;
+        margin-left: -20%;
+      }
     </style>
 
     <!-- For syntax highlighting -->
@@ -89,7 +99,6 @@
             </script>
           </section>
 
-          <!-- TODO: detail old Django manifest -->
           <section data-markdown>
             <script type='text/template'>
               ## Puppet manifests
@@ -132,7 +141,7 @@
             Is the answer to everything!
 
             ```bash
-            docker run containers.company.com/application
+            docker run company.com/myapp
             ```
 
             * What does this do? (Probably starts a server)
@@ -144,19 +153,19 @@
         </section>
 
         <section>
-          <!-- TODO: LARGER -->
           <section data-markdown>
             <script type='text/template'>
               ## Application lifecycle
 
               ```bash
-              docker run application test
-              docker run application deploy
-              docker run application serve
+              docker run company.com/myapp test
+              docker run company.com/myapp deploy
+              docker run company.com/myapp serve
               ```
             </script>
           </section>
 
+          <!-- TODO: LARGER DIAGRAMS -->
           <section>
             <h2>Fresh deploy</h2>
 
@@ -170,17 +179,43 @@
           </section>
         </section>
 
-        <section data-markdown>
-          <script type='text/template'>
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
             ## Standardised environment
 
-            * Port 8000
-            * `/storage` is persistent storage
             * Configuration by environment variables
-              * URL, Environment, Number of workers, ...
-            * Service links by environment variables
-              * PostgreSQL URL, Elasticsearch, ...
-          </script>
+              * Own URL
+              * Environment type (production, staging, test, etc.)
+              * Number of workers
+              * ...
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Services
+                * PostgreSQL
+                * Elasticsearch
+                * Logging server
+                * Email
+                * ...
+
+              * Each specified as an environment variable
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Port 8000
+              * `/storage` is persistent storage
+              * `/static` is served by Nginx
+            </script>
+          </section>
         </section>
 
         <section>
@@ -212,12 +247,10 @@
 
               ```yaml
                 myapp:
-                  image: 'containers.company.com/myapp'
+                  image: 'company.com/myapp'
                   tag: 'v0.11.3'
-                  ports:
-                    - 10000:8000
                   environment: 'prod'
-                  site_domain: 'public-facing-url.io'
+                  site_domain: 'public-url.io'
                   weight: 2
                   minservers: 2
                   ...
@@ -225,7 +258,7 @@
             </script>
           </section>
 
-          <section data-markdown>
+          <section data-markdown data-state="wideslide">
             <script type='text/template'>
               ## Puppet
 
@@ -264,7 +297,7 @@
                 site_common:
                   db_default_type: 'postgres'
                   db_default_port: 5432
-                  db_default_host: 'postgres-cluster-vip.company.com'
+                  db_default_host: 'pg-cluster.company.com'
                   volumes:
                     - 'storage:/storage:rw'
                   site_protocol: 'https'
@@ -301,7 +334,7 @@
               -e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
               -v /mnt/docker-storage/myapp:/storage \
               -h WHY_ARE_YOU_STILL_READING_THIS \
-              containers.company.com/application \
+              company.com/myapp \
               serve
             ```
 
@@ -325,7 +358,7 @@
 
               Run the container:
               ```bash
-              forklift containers.company.com/application serve
+              forklift company.com/myapp serve
               ```
             </script>
           </section>
@@ -359,7 +392,7 @@
             How do I `ssh`?
 
             ```bash
-            forklift containers.company.com/application sshd \
+            forklift company.com/myapp sshd \
               --mount-root /tmp/myapp_root
             ```
 
@@ -374,7 +407,7 @@
           <script type='text/template'>
             ## Whale in the room
 
-            * <code>docker build</code> is slow
+            * `docker build` is slow
                 * Caching helps, but overhead still present
             * Entry point is already available
 
@@ -389,11 +422,11 @@
             ## Happy devs
 
             * No deployments failed due to dependencies
+            * Clear boundary with Ops
             * Seamlessly switched Django to Gunicorn
             * Added [Celery](http://www.celeryproject.org/) to containers without configuration changes
           </script>
         </section>
-        <!-- TODO: Add more -->
 
         <section>
           <section data-markdown>
@@ -425,14 +458,14 @@
               ## Alternatives
 
               * Docker link
-              * Fig
-              * DryDock
-              * Gaudi
+              * Fig, DryDock, Gaudi
 
               Solving a different, although related, problem
+
+              No service authentication management (e.g. database passwords)
+              No lifecycle management
             </script>
           </section>
-          <!-- TODO: Summarise deficiencies on the first slide -->
 
           <section data-markdown>
             <script type='text/template'>
