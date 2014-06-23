@@ -27,6 +27,12 @@
         width: 140%;
         margin-left: -20%;
       }
+
+      .reveal iframe {
+        max-width: 120%;
+        width: 120%;
+        height: 700px;
+      }
     </style>
 
     <!-- For syntax highlighting -->
@@ -165,13 +171,13 @@
           <section>
             <h2>Fresh deploy</h2>
 
-            <iframe src='diagrams/fresh-deploy.html' width='100%' height='700px'></iframe>
+            <iframe src='diagrams/fresh-deploy.html'></iframe>
           </section>
 
           <section>
             <h2>New version</h2>
 
-            <iframe src='diagrams/new-version.html' width='100%' height='700px'></iframe>
+            <iframe src='diagrams/new-version.html'></iframe>
           </section>
         </section>
 
@@ -443,6 +449,7 @@
           <script type='text/template'>
             ## Questions?
 
+            * [github.com/infoxchange/pallet](https://github.com/infoxchange/pallet)
             * [github.com/infoxchange/docker-forklift](https://github.com/infoxchange/docker-forklift)
             * [ixa.io/slides/pallet-forklift](http://ixa.io/slides/pallet-forklift)
           </script>
@@ -456,10 +463,11 @@
               * Docker link
               * Fig, DryDock, Gaudi
 
-              Solving a different, although related, problem
+              - - -
 
-              No service authentication management (e.g. database passwords)
-              No lifecycle management
+              * Solving a different, although related, problem
+              * No service authentication management (e.g. database passwords)
+              * No lifecycle management
             </script>
           </section>
 
