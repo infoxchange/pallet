@@ -82,18 +82,18 @@ The deploy phase MUST NOT assume that any other version of itself was already
 released in the environment it's running in. It also SHOULD run correctly on
 top of any of the versions known to be ever released into the environment.
 
-### Serving requests
+### Serve
 
-Once an application is successfully deployed, the serve phase can be run. The
-application is expected to serve the incoming HTTP requests for the users at
-this phase. It MAY choose to do additional processing as well.
+Once an application is successfully deployed, it is expected to serve the
+incoming HTTP requests for the user. It MAY also do additional processing as
+well, such as running periodic tasks.
+
+The serve phase is run via the `serve` command to the Docker image.
 
 The application MUST listen for HTTP requests on port 8000 during this phase,
 and Pallet MUST proxy the requests from the users to the application. In case
 the application is exposed to the users via HTTPS, Pallet MUST still make
 requests to the application in HTTP.
-
-The serve phase is run via the `serve` command to the Docker image.
 
 Pallet MAY run multiple serve phases of the same application version in
 parallel, once at least one deploy phase of said version completed
@@ -106,14 +106,16 @@ reasonable timeframe, terminate the serve phases or the previous version.
 Terminating the serve phases SHOULD be done with a TERM signal, but Pallet MAY
 send a KILL signal if the application afterwards or even instead of it.
 
-### Testing the application
+### Test
 
 Application SHOULD have a test suite. If it does, it MUST be run when `test`
 command is passed to the Docker image. The command MUST exit with status 0 if
 and only if the test suite passed.
 
 Conventions on the test suite implementation, output, etc. are outside the
-scope of the deployment standard.
+scope of the deployment standard. However, if a test system is provided, it
+SHOULD follow the environment conventions below, for example, to provide the
+services during the test.
 
 Environment
 -----------
