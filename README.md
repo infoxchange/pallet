@@ -12,14 +12,12 @@ This is a set of conventions to deploy Web applications via [Docker]
 containers. It supports no-downtime upgrades and clustering, and is aimed to
 follow [12factor] as close as possible.
 
+The specification is written as a contract between a deployment system
+(referred to as Pallet hereafter) and an application represented by a Docker
+image.
+
 The standard is a work in progress, so there is no stable version yet. The
 specifications below can change without notice.
-
-The Pallet specification is a contract between a deployment system (referred to
-as Pallet hereafter) and an application represented by a Docker image.
-
-Multiple independent instances of the application - environments - can be
-running within Pallet at the same time.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
 "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be
@@ -144,6 +142,15 @@ commands it runs:
   up by Pallet users, and is only expected to be understood by the application.
   Typical use can be controlling the performance vs. logging output for test
   and production instances.
+
+The following environment variables MAY be provided for the serve phase only:
+
+* `WEB_CONCURRENCY` - the number of processes serving HTTP requests.
+* `WORKER_CONCURRENCY` - the number of background processes.
+
+If either of them is present, the application SHOULD start as many HTTP or
+background workers, respectively. If one or the other is not specified, the
+application MUST use its own judgement of how many workers to start.
 
 ### Services
 
@@ -270,6 +277,12 @@ Tools
   developing containerized applications.
 * [IXDjango](https://github.com/infoxchange/ixdjango) - a package to aid in
   making Django applications follow the Pallet standard.
+
+TODO
+----
+
+* Some services don't follow 12factor's "URL as address" pattern.
+* Wider range of services
 
 [Docker]: https://www.docker.com/
 [12factor]: http://12factor.net/
