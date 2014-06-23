@@ -89,8 +89,9 @@ application is expected to serve the incoming HTTP requests for the users at
 this phase. It MAY choose to do additional processing as well.
 
 The application MUST listen for HTTP requests on port 8000 during this phase,
-even if it is to be exposed to users via HTTPS (in which case, Pallet SHALL
-proxy the requests).
+and Pallet MUST proxy the requests from the users to the application. In case
+the application is exposed to the users via HTTPS, Pallet MUST still make
+requests to the application in HTTP.
 
 The serve phase is run via the `serve` command to the Docker image.
 
@@ -133,10 +134,10 @@ Pallet MUST provide the following environment variables to all the application
 commands it runs:
 
 * `SITE_PROTOCOL`, `SITE_DOMAIN` - respectively, the URL scheme (such as `http`
-  or `https` and domain, as reachable by the application users. Pallet MAY
-  proxy the requests to the application, so it SHOULD NOT trust the HTTP
-  `Host` header. If the application is exposed to the users via HTTPS, Pallet
-  MUST proxy the requests so the traffic to the application is still HTTP.
+  or `https` and domain, as reachable by the application users. As Pallet is
+  proxying the requests to the application, it SHOULD NOT trust the HTTP `Host`
+  header. If the application is exposed to the users via HTTPS, it still MUST
+  accept HTTP and not HTTPS, relying on Pallet proxy.
 * `ENVIRONMENT` - a string identifying the instance configuration. This is set
   up by Pallet users, and is only expected to be understood by the application.
   Typical use can be controlling the performance vs. logging output for test
@@ -184,8 +185,81 @@ The application MUST NOT make requests to any indices other than the specified
 one. It MAY, however, create, delete or modify any indices having the specified
 name as a prefix, for atomizing long-running index operations.
 
-Frequently asked questions
---------------------------
+#### Memcache
+
+Environment variables:
+
+* `MEMCACHE_HOSTS`: a pipe (`|`)-separated list of Memcache hosts.
+* `MEMCACHE_PREFIX`: a prefix to use for keys stored by the application.
+
+#### Mail transfer agent (SMTP)
+
+Environment variables: `EMAIL_HOST`, `EMAIL_PORT` - an address of an SMTP
+server.
+
+The SMTP server provided MUST NOT require authentication.
+
+#### HTTP proxy
+
+Environment variable: `HTTP_PROXY` - an URL for the HTTP proxy.
+
+Connecting to arbitrary hosts from the application MAY be restricted by Pallet,
+in which case an HTTP proxy service SHOULD be provided.
+
+#### Syslog
+
+Environment variables: `SYSLOG_SERVER`, `SYSLOG_HOST`, `SYSLOG_PROTO`: host,
+port and protocol (`tcp` or `udp`) to connect to a Syslog instance.
+
+The application SHOULD prefer logging events to the Syslog service rather than
+to the console.
+
+### Storage
+
+Applications typically want to store the files, such as user uploads, and
+persist them between versions. For this purpose, Pallet MUST mount a filesystem
+to `/storage` inside the Docker container. The same filesystem MUST be mounted
+to all the phases, including ones running in parallel and on different hosts.
+The filesystem MUST be writable. The application MUST NOT expect particular
+permissions (and is expected to set them up itself).
+
+### Static file serving
+
+Applications typically want to serve static content to the users, for which
+aggressive caching is desirable and going through the application server itself
+is overkill. For this purpose, Pallet provides a mechanism to optimize serving
+static files.
+
+Pallet MUST mount a filesystem to `/static` inside the Docker container during
+all phases, and upon receiving a request for a URL inside `/static`, MUST serve
+the corresponding file out of that filesystem.
+
+When responding to the request, Pallet SHOULD consider the static resources
+immutable, and advertise this to the clients by setting appropriate cache
+headers.
+
+The application SHOULD assume the clients can have an older version of static
+resources if they are overwritten, and instead SHOULD rely on versioning or
+hashing in the file names to ensure clients have correct version of resources.
+
+As with storage, the same filesystem MUST be mounted to all the phases,
+including different hosts. Pallet MAY mount either an old version's static
+filesystem or a clean new one to a new version. As with storage, the
+application MUST NOT expect particular permissions on any files in it.
+
+If a new static filesystem is used for the new version, then files from the old
+version SHOULD be available while any serve phases from the old version are
+running. Files from the new version MUST be available as soon as at least one
+new serve phase is running.
+
+Docker parameters
+-----------------
+
+Pallet MUST run the Docker containers using the initial user and the entrypoint
+specified in the application image. Port 8000 MUST be forwarded to the outside
+for the purposes of sending the application requests. Any additional ports
+defined in the image SHOULD NOT be forwarded. Volumes (except storage and
+static) defined in the image SHOULD NOT be mounted.
 
 Tools
 -----
