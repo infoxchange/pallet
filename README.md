@@ -282,7 +282,9 @@ TODO
 ----
 
 * Some services don't follow 12factor's "URL as address" pattern.
-* Wider range of services
+* Wider range of services.
+* Versioning of the spec.
+* Applications to specify required and optional services.
 
 [Docker]: https://www.docker.com/
 [12factor]: http://12factor.net/
