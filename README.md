@@ -26,7 +26,7 @@ interpreted as described in [RFC 2119].
 Application lifecycle
 ---------------------
 
-The expected main function of the applications is sering user requests.
+The expected main function of the applications is serving user requests.
 However, to facilitate releasing new versions of the application, four
 distinct phases are recognized:
 
@@ -48,7 +48,7 @@ application MUST support the deploy phase via running the `deploy` command.
 
 Deploy phase is meant to prepare the environment for this particular version of
 the application. This includes the tasks typically known as "migrations", for
-exapmple, setting up the database structure.
+example, setting up the database structure.
 
 Deploy phase SHALL be run at least once before serve phase of the particular
 version.
