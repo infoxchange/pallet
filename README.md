@@ -268,6 +268,8 @@ Tools
 
 * [Forklift](https://github.com/infoxchange/docker-forklift) - a tool for
   developing containerized applications.
+* [IXDjango](https://github.com/infoxchange/ixdjango) - a package to aid in
+  making Django applications follow the Pallet standard.
 
 [Docker]: https://www.docker.com/
 [12factor]: http://12factor.net/
