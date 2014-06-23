@@ -176,6 +176,10 @@ SHOULD be permitted as well. The application MUST NOT assume superuser access
 to the whole database server, or any access to other databases on the same
 server.
 
+Additional databases, such as legacy databases for particular applications to
+connect to, MAY be provided, using environment variables such as `DB_XXXX_URL`,
+where `XXXX` is an application-specific database name.
+
 #### Elasticsearch
 
 Environment variables:
