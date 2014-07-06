@@ -205,6 +205,12 @@ Environment variables:
 * `MEMCACHE_HOSTS`: a pipe (`|`)-separated list of Memcache hosts.
 * `MEMCACHE_PREFIX`: a prefix to use for keys stored by the application.
 
+#### RabbitMQ
+
+Environment variable: `AMQP_URLS`, a pipe (`|`)-separated list of
+[AMQP URLs](https://www.rabbitmq.com/uri-spec.html) to
+connect to.
+
 #### Mail transfer agent (SMTP)
 
 Environment variables: `EMAIL_HOST`, `EMAIL_PORT` - an address of an SMTP
