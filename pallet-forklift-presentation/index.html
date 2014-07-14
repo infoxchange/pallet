@@ -80,10 +80,9 @@
               ## Infoxchange applications
 
               * Django/Python for new code
+              * Some PHP
               * Legacy Perl applications tied to Apache
-              * Python ESB ([Zato](https://zato.io))
               * Wishlist: in-house CI server
-              * Wishlist: Python 3
             </script>
           </section>
 
@@ -94,10 +93,27 @@
               * Apache `mod_wsgi` as Web server
               * `virtualenv` for managing Python dependencies
               * South for database migrations
-              * Problems:
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Deployment
+
+              ```bash
+              git checkout ...
+              pip install -r requirements.txt
+              python_env/bin/python manage.py migrate
+              invoke-rc.d apache2 restart
+              ```
+
+              * Python-specific
+              * Hard to extend:
                 * Non-Python libraries (e.g. `libxml`)
-                * Uninstalling (no `pip uninstall`)
-                * Recently, NPM and Bower dependencies
+                * Bower
+                * Python 3
+              * Requires PyPI, GitHub, etc. to be up
+              * No abort modes
             </script>
           </section>
 
@@ -109,16 +125,6 @@
               * Unclear responsibility boundary between Dev and Ops
               * Unmaintainable chain of `Exec{}s` and permission changes
               * Deploys require external sites to be available (including production)
-            </script>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ## Development environment
-
-              * Puppet-controlled VMs
-              * Use case different from production
-              * Puppet sometimes ruins the developers' work
             </script>
           </section>
 
