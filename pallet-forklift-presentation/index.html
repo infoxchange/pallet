@@ -142,22 +142,34 @@
           </section>
         </section>
 
-        <section data-markdown>
-          <script type='text/template'>
-            ## Docker
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Docker
 
-            Is the answer to everything!
+              Is the answer to everything!
 
-            ```bash
-            docker run company.com/myapp
-            ```
+              ```bash
+              docker run company.com/myapp
+              ```
 
-            * What does this do? (Probably starts a server)
-            * What is the port to connect to?
-            * How do I specify the database to use?
-            * Can I have a cluster of these?
-            * How to hot-deploy?
-          </script>
+              * What does this do? (Probably starts a server)
+              * What is the port to connect to?
+              * How do I specify the database to use?
+              * Can I have a cluster of these?
+              * How to hot-deploy?
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Pallet
+
+              * Application lifecycle
+              * Environment configuration
+              * Development tools
+            </script>
+          </section>
         </section>
 
         <section>
@@ -165,8 +177,18 @@
             <script type='text/template'>
               ## Application lifecycle
 
+              * Deploy phase (database migrations, etc.)
+              * Scaling
+              * Zero downtime
+              * Aborting a failed deployment
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Application lifecycle
+
               ```bash
-              docker run company.com/myapp test
               docker run company.com/myapp deploy
               docker run company.com/myapp serve
               ```
@@ -190,13 +212,23 @@
         <section>
           <section data-markdown>
             <script type='text/template'>
-            ## Standardised environment
+              ## Standardised environment
 
-            * Configuration by environment variables
-              * Own URL
-              * Environment type (production, staging, test, etc.)
-              * Number of workers
-              * ...
+              * Same image in test, staging, production
+              * No configuration specified in the code
+              * Works for development as well
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Configuration by environment variables
+                * Own URL
+                * Environment type (production, staging, test, etc.)
+                * Number of workers
+                * ...
             </script>
           </section>
 
@@ -207,7 +239,7 @@
               * Services
                 * PostgreSQL
                 * Elasticsearch
-                * Logging server
+                * Logging
                 * Email
                 * ...
 
