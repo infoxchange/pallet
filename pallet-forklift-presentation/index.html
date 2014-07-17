@@ -113,7 +113,7 @@
                 * Bower
                 * Python 3
               * Requires PyPI, GitHub, etc. to be up
-              * No abort modes
+              * No rollback
             </script>
           </section>
 
@@ -177,10 +177,12 @@
             <script type='text/template'>
               ## Application lifecycle
 
-              * Deploy phase (database migrations, etc.)
-              * Scaling
-              * Zero downtime
-              * Aborting a failed deployment
+              * Deploy phase
+                * Database migrations, etc.
+                * Aborting a failed deployment
+              * Serve phase
+                * Scaling
+                * Zero downtime
             </script>
           </section>
 
@@ -257,6 +259,13 @@
             </script>
           </section>
         </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Implementation
+          </script>
+        </section>
+
 
         <section>
           <section data-markdown>
@@ -488,6 +497,8 @@
               forklift --application_id $(git describe) \
                   $CONTAINER_ID test
               ```
+
+              Same for every application regardless of framework
             </script>
           </section>
         </section>
@@ -509,8 +520,6 @@
               ## Future plans
 
               * Inter-application dependencies
-                * Applications as RESTful services
-                * Microservices architecture
               * Multiple container types for an application
                 * Web server
                 * Background worker
