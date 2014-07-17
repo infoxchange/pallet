@@ -80,10 +80,9 @@
               ## Infoxchange applications
 
               * Django/Python for new code
+              * Some PHP
               * Legacy Perl applications tied to Apache
-              * Python ESB ([Zato](https://zato.io))
               * Wishlist: in-house CI server
-              * Wishlist: Python 3
             </script>
           </section>
 
@@ -94,10 +93,27 @@
               * Apache `mod_wsgi` as Web server
               * `virtualenv` for managing Python dependencies
               * South for database migrations
-              * Problems:
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Deployment
+
+              ```bash
+              git checkout ...
+              pip install -r requirements.txt
+              python_env/bin/python manage.py migrate
+              invoke-rc.d apache2 restart
+              ```
+
+              * Python-specific
+              * Hard to extend:
                 * Non-Python libraries (e.g. `libxml`)
-                * Uninstalling (no `pip uninstall`)
-                * Recently, NPM and Bower dependencies
+                * Bower
+                * Python 3
+              * Requires PyPI, GitHub, etc. to be up
+              * No rollback
             </script>
           </section>
 
@@ -109,16 +125,6 @@
               * Unclear responsibility boundary between Dev and Ops
               * Unmaintainable chain of `Exec{}s` and permission changes
               * Deploys require external sites to be available (including production)
-            </script>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ## Development environment
-
-              * Puppet-controlled VMs
-              * Use case different from production
-              * Puppet sometimes ruins the developers' work
             </script>
           </section>
 
@@ -136,22 +142,34 @@
           </section>
         </section>
 
-        <section data-markdown>
-          <script type='text/template'>
-            ## Docker
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Docker
 
-            Is the answer to everything!
+              Is the answer to everything!
 
-            ```bash
-            docker run company.com/myapp
-            ```
+              ```bash
+              docker run company.com/myapp
+              ```
 
-            * What does this do? (Probably starts a server)
-            * What is the port to connect to?
-            * How do I specify the database to use?
-            * Can I have a cluster of these?
-            * How to hot-deploy?
-          </script>
+              * What does this do? (Probably starts a server)
+              * What is the port to connect to?
+              * How do I specify the database to use?
+              * Can I have a cluster of these?
+              * How to hot-deploy?
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Pallet
+
+              * Application lifecycle
+              * Environment configuration
+              * Development tools
+            </script>
+          </section>
         </section>
 
         <section>
@@ -159,8 +177,20 @@
             <script type='text/template'>
               ## Application lifecycle
 
+              * Deploy phase
+                * Database migrations, etc.
+                * Aborting a failed deployment
+              * Serve phase
+                * Scaling
+                * Zero downtime
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Application lifecycle
+
               ```bash
-              docker run company.com/myapp test
               docker run company.com/myapp deploy
               docker run company.com/myapp serve
               ```
@@ -184,13 +214,23 @@
         <section>
           <section data-markdown>
             <script type='text/template'>
-            ## Standardised environment
+              ## Standardised environment
 
-            * Configuration by environment variables
-              * Own URL
-              * Environment type (production, staging, test, etc.)
-              * Number of workers
-              * ...
+              * Same image in test, staging, production
+              * No configuration specified in the code
+              * Works for development as well
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Configuration by environment variables
+                * Own URL
+                * Environment type (production, staging, test, etc.)
+                * Number of workers
+                * ...
             </script>
           </section>
 
@@ -201,7 +241,7 @@
               * Services
                 * PostgreSQL
                 * Elasticsearch
-                * Logging server
+                * Logging
                 * Email
                 * ...
 
@@ -219,6 +259,13 @@
             </script>
           </section>
         </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Implementation
+          </script>
+        </section>
+
 
         <section>
           <section data-markdown>
@@ -389,7 +436,28 @@
 
         <section data-markdown>
           <script type='text/template'>
+            ## Whale in the room
+
+            * Typical development use case: quickly run a command
+                * Run tests
+                * Run a development Web server
+            * `docker build` is slow
+                * Caching helps, but overhead still present
+            * Entry point is already available
+
+            ```bash
+            forklift ./manage.py run_gunicorn
+            ```
+
+            Caveat: the host environment might be different from the container
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
             ## Troubleshooting
+
+            It works locally, but not in the container!
 
             How do I `ssh`?
 
@@ -405,18 +473,34 @@
           </script>
         </section>
 
-        <section data-markdown>
-          <script type='text/template'>
-            ## Whale in the room
+        <section>
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
 
-            * `docker build` is slow
-                * Caching helps, but overhead still present
-            * Entry point is already available
+              * Forklift can run several containers or commands in parallel...
+                  * Independently!
 
-            ```bash
-            forklift ./manage.py run_gunicorn
-            ```
-          </script>
+              ```bash
+              forklift --application_id myapp_long_tests \
+                  ./manage.py test
+              forklift ./manage.py runserver
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
+
+              ```bash
+              forklift --application_id $(git describe) \
+                  $CONTAINER_ID test
+              ```
+
+              Same for every application regardless of framework
+            </script>
+          </section>
         </section>
 
         <section data-markdown>
@@ -436,8 +520,6 @@
               ## Future plans
 
               * Inter-application dependencies
-                * Applications as RESTful services
-                * Microservices architecture
               * Multiple container types for an application
                 * Web server
                 * Background worker
