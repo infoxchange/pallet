@@ -427,7 +427,28 @@
 
         <section data-markdown>
           <script type='text/template'>
+            ## Whale in the room
+
+            * Typical development use case: quickly run a command
+                * Run tests
+                * Run a development Web server
+            * `docker build` is slow
+                * Caching helps, but overhead still present
+            * Entry point is already available
+
+            ```bash
+            forklift ./manage.py run_gunicorn
+            ```
+
+            Caveat: the host environment might be different from the container
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
             ## Troubleshooting
+
+            It works locally, but not in the container!
 
             How do I `ssh`?
 
@@ -443,18 +464,32 @@
           </script>
         </section>
 
-        <section data-markdown>
-          <script type='text/template'>
-            ## Whale in the room
+        <section>
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
 
-            * `docker build` is slow
-                * Caching helps, but overhead still present
-            * Entry point is already available
+              * Forklift can run several containers or commands in parallel...
+                  * Independently!
 
-            ```bash
-            forklift ./manage.py run_gunicorn
-            ```
-          </script>
+              ```bash
+              forklift --application_id myapp_long_tests \
+                  ./manage.py test
+              forklift ./manage.py runserver
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
+
+              ```bash
+              forklift --application_id $(git describe) \
+                  $CONTAINER_ID test
+              ```
+            </script>
+          </section>
         </section>
 
         <section data-markdown>
