@@ -1,0 +1,7 @@
+{
+  "name": "django_docker_presentation",
+  "dependencies": {
+    "jquery": "*",
+    "reveal.js": "*"
+  }
+}

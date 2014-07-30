@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Pallet &amp; Forklift &mdash; developing and deploying Web applications</title>
+
+    <meta name="description" content="Pallet &amp; Forklift &mdash; developing and deploying Web applications using Docker">
+    <meta name="author" content="Alexey Kotlyarov, Ross Williamson">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/solarized.css" id="theme">
+
+    <style type="text/css">
+      .reveal pre code {
+        font-size: 33px;
+        line-height: 36px;
+      }
+
+      .reveal *[data-state=wideslide] pre {
+        width: 140%;
+        margin-left: -20%;
+      }
+
+      .reveal iframe {
+        max-width: 120%;
+        width: 120%;
+        height: 700px;
+      }
+    </style>
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css">
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'bower_components/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/reveal.js/lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <div class="slides">
+        <section data-markdown>
+          <script type='text/template'>
+            # Pallet & Forklift
+            ### developing and deploying Web applications using Docker
+
+            Alexey Kotlyarov (Development)
+
+            Ross Williamson (Operations)
+
+            [![Infoxchange](IXA_logo.jpg)](http://infoxchange.net.au)
+
+            [ixa.io](http://ixa.io)
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Infoxchange applications
+
+              * Django/Python for new code
+              * Some PHP
+              * Legacy Perl applications tied to Apache
+              * Wishlist: in-house CI server
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Typical Django application
+
+              * Apache `mod_wsgi` as Web server
+              * `virtualenv` for managing Python dependencies
+              * South for database migrations
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Deployment
+
+              ```bash
+              git checkout ...
+              pip install -r requirements.txt
+              python_env/bin/python manage.py migrate
+              invoke-rc.d apache2 restart
+              ```
+
+              * Python-specific
+              * Hard to extend:
+                * Non-Python libraries (e.g. `libxml`)
+                * Bower
+                * Python 3
+              * Requires PyPI, GitHub, etc. to be up
+              * No rollback
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Puppet manifests
+
+              * Declarative language not suited for complex operations
+              * Unclear responsibility boundary between Dev and Ops
+              * Unmaintainable chain of `Exec{}s` and permission changes
+              * Deploys require external sites to be available (including production)
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Goals
+
+              Inspired by [12 factor](http://12factor.net/)
+
+              * Framework-, language-agnostic deployment
+              * Zero downtime deployment
+              * Clustering
+              * Separation of responsibility (Dev vs. Ops)
+            </script>
+          </section>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Docker
+
+              Is the answer to everything!
+
+              ```bash
+              docker run company.com/myapp
+              ```
+
+              * What does this do? (Probably starts a server)
+              * What is the port to connect to?
+              * How do I specify the database to use?
+              * Can I have a cluster of these?
+              * How to hot-deploy?
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Pallet
+
+              * Application lifecycle
+              * Environment configuration
+              * Development tools
+            </script>
+          </section>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Application lifecycle
+
+              * Deploy phase
+                * Database migrations, etc.
+                * Aborting a failed deployment
+              * Serve phase
+                * Scaling
+                * Zero downtime
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Application lifecycle
+
+              ```bash
+              docker run company.com/myapp deploy
+              docker run company.com/myapp serve
+              ```
+            </script>
+          </section>
+
+          <!-- TODO: LARGER DIAGRAMS -->
+          <section>
+            <h2>Fresh deploy</h2>
+
+            <iframe src='diagrams/fresh-deploy.html'></iframe>
+          </section>
+
+          <section>
+            <h2>New version</h2>
+
+            <iframe src='diagrams/new-version.html'></iframe>
+          </section>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Same image in test, staging, production
+              * No configuration specified in the code
+              * Works for development as well
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Configuration by environment variables
+                * Own URL
+                * Environment type (production, staging, test, etc.)
+                * Number of workers
+                * ...
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Services
+                * PostgreSQL
+                * Elasticsearch
+                * Logging
+                * Email
+                * ...
+
+              * Each specified as an environment variable
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Standardised environment
+
+              * Port 8000
+              * `/storage` is persistent storage
+              * `/static` is served by Nginx
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Implementation
+          </script>
+        </section>
+
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Orchestration
+
+              * Many options (CoreOS+fleet, Decking, docker-cluster...)
+              * More every day (!)
+              * Strong focus on systemd
+              * Was not practical for our use-case
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Init script
+
+              * Started as entirely bash
+              * Now calls out to Ruby script for most functionality
+              * Uses swipe.ly [docker-api](https://github.com/swipely/docker-api) Ruby gem
+              * [Serf](http://www.serfdom.io/) for cluster comms
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration in Hiera
+
+              ```yaml
+                myapp:
+                  image: 'company.com/myapp'
+                  tag: 'v0.11.3'
+                  environment: 'prod'
+                  site_domain: 'public-url.io'
+                  weight: 2
+                  minservers: 2
+                  ...
+              ```
+            </script>
+          </section>
+
+          <section data-markdown data-state="wideslide">
+            <script type='text/template'>
+              ## Puppet
+
+              * Deploys configuration for init script
+              * Standard `Service{}` type
+              * Calls `status` on init script
+
+              ```bash
+              you@host-01:~  # /etc/init.d/docker-myapp status
+              Container:            myapp
+              Requested tag:        v0.11.3
+              Optimal status:       true
+              Locked from starting: false
+              Running on this host: true
+              Tag on this host:     v0.11.3
+              Running on:           host-01 (tag v0.11.3), host-03 (tag v0.11.3)
+              Deploying on:
+              Command running on:
+              ```
+              * Return code non-zero on non-optimal
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Puppet continued
+
+              * Also configures
+                * PostgreSQL database servers + ACLs
+                * Nginx load balancers
+                * Persistent storage for containers + ACLs
+                * Docker images from registry
+
+              * All from Hiera
+              ```yaml
+                site_common:
+                  db_default_type: 'postgres'
+                  db_default_port: 5432
+                  db_default_host: 'pg-cluster.company.com'
+                  volumes:
+                    - 'storage:/storage:rw'
+                  site_protocol: 'https'
+                  ...
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Happy Ops
+
+              * Puppet being used for its strengths
+              * Every application now uses the same Puppet classes
+              * Infrastructure changes easier
+              * Every app gets new features automatically
+              * Simple DR procedure
+            </script>
+          </section>
+
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Running the container
+
+            ```bash
+            docker run \
+              -p 8000:8000 \
+              -e DB_DEFAULT_URL=postgres://myapp-staging:password@db-server:5432/myapp_db_staging \
+              -e SITE_DOMAIN=myapp-staging.company.com \
+              -e SITE_PROTO=https \
+              -e ENVIRONMENT=staging \
+              -e ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index|http://es-server-02/myapp_index \
+              -v /mnt/docker-storage/myapp:/storage \
+              -h WHY_ARE_YOU_STILL_READING_THIS \
+              company.com/myapp \
+              serve
+            ```
+
+            * Puppet supplies configuration, init script runs
+            * What do developers do?
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Forklift
+
+              Declare your dependencies:
+              ```yaml
+              # myapp/forklift.yaml
+              services:
+                - postgres
+                - elasticsearch
+              ```
+
+              Run the container:
+              ```bash
+              forklift company.com/myapp serve
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Configuration
+
+              * Defaults to services on the local machine
+                  * PostgreSQL, Elasticsearch, Memcached, etc.
+              * Will run services in containers if images are available
+              * All configuration can be overridden:
+
+              ```yaml
+              # ~/.config/forklift/_default.yaml
+              postgres:
+                port: 5433
+
+              # ~/.config/forklift/myapp.yaml
+              environment:
+                DB_LEGACY_URL: postgres://myapp:dieplz@legacy-srv/oldapp_backup_backup
+              ```
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Whale in the room
+
+            * Typical development use case: quickly run a command
+                * Run tests
+                * Run a development Web server
+            * `docker build` is slow
+                * Caching helps, but overhead still present
+            * Entry point is already available
+
+            ```bash
+            forklift ./manage.py run_gunicorn
+            ```
+
+            Caveat: the host environment might be different from the container
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Troubleshooting
+
+            It works locally, but not in the container!
+
+            How do I `ssh`?
+
+            ```bash
+            forklift company.com/myapp sshd \
+              --mount-root /tmp/myapp_root
+            ```
+
+            * SSH daemon is installed and configured
+            * `sudo` is enabled
+            * Container filesystem is bind-mounted to the host
+            * More magic to make it all work
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
+
+              * Forklift can run several containers or commands in parallel...
+                  * Independently!
+
+              ```bash
+              forklift --application_id myapp_long_tests \
+                  ./manage.py test
+              forklift ./manage.py runserver
+              ```
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template' data-state="wideslide">
+              ## Continuous integration
+
+              ```bash
+              forklift --application_id $(git describe) \
+                  $CONTAINER_ID test
+              ```
+
+              Same for every application regardless of framework
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Happy devs
+
+            * No deployments failed due to dependencies
+            * Clear boundary with Ops
+            * Seamlessly switched Django to Gunicorn
+            * Added [Celery](http://www.celeryproject.org/) to containers without configuration changes
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Future plans
+
+              * Inter-application dependencies
+              * Multiple container types for an application
+                * Web server
+                * Background worker
+            </script>
+          </section>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+            ## Questions?
+
+            * [github.com/infoxchange/pallet](https://github.com/infoxchange/pallet)
+            * [github.com/infoxchange/docker-forklift](https://github.com/infoxchange/docker-forklift)
+            * [ixa.io/slides/pallet-forklift](http://ixa.io/slides/pallet-forklift)
+          </script>
+        </section>
+
+        <section>
+          <section data-markdown>
+            <script type='text/template'>
+              ## Alternatives
+
+              * Docker link
+              * Fig, DryDock, Gaudi
+
+              - - -
+
+              * Solving a different, although related, problem
+              * No service authentication management (e.g. database passwords)
+              * No lifecycle management
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Docker link
+
+              * Limited service functionality: port and host, no authentication
+              * No lifecycle management
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Fig
+
+              * Relies on `docker link`
+              * Services only provided via containers
+              * No service authentication
+
+              https://orchardup.github.io/fig/
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## DryDock
+
+              * Different purpose: spin up unrelated containers together
+              * No service management
+
+              https://github.com/Nekroze/drydock
+            </script>
+          </section>
+
+          <section data-markdown>
+            <script type='text/template'>
+              ## Gaudi
+
+              * Limited types of application containers
+              * Services only provided via containers
+              * No service authentication
+
+              http://gaudi.io/
+            </script>
+          </section>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script src="bower_components/reveal.js/js/reveal.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/coffee-script/extras/coffee-script.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+      });
+
+    </script>
+
+  </body>
+</html>
