@@ -16,4 +16,8 @@ install:
 
 build: danni.css
 
-.PHONY: all install
+serve:
+	python3 -m http.server &
+	xdg-open http://localhost:8000/
+
+.PHONY: all install serve
