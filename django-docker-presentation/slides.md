@@ -71,3 +71,44 @@ Note:
 Custom services are easy to add (e.g. MySQL).
 
 Can be extended to run pallets on OpenShift or Heroku?
+
+
+
+## IXDjango - pallet configuration for Django
+
+```bash
+pip install IXDjango
+```
+
+```python
+from ixdjango.docker_settings import *
+```
+
+Note:
+
+Reads the required environment variables and provides the default database,
+logging, static settings, etc.
+
+Also provides `manage.py deploy`.
+
+
+
+## Continuous integration
+
+```
+forklift --cleanroom myapp test
+```
+
+Note:
+
+`test` command runs `./manage.py test` or whatever it is mapped to (Lettuce
+tests, Nose, etc.)
+
+Forklift `--cleanroom` flag starts every required services in a separate
+container to ensure the tests don't interfere with any other running
+application. Tests can even run in parallel, and the only problem would be
+contending for port 8000 (not an issue in Docker).
+
+We have tried to build a CI application to test other container while being a
+containerised application itself, but ran into several weird bugs in early
+Docker (hopefully fixed now?).
