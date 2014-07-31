@@ -112,3 +112,24 @@ contending for port 8000 (not an issue in Docker).
 We have tried to build a CI application to test other container while being a
 containerised application itself, but ran into several weird bugs in early
 Docker (hopefully fixed now?).
+
+
+
+## Legacy applications
+
+Docker is ideal for doing nasty things...
+
+...reproducibly
+
+* mod_python
+* Apache 1.3
+
+Please don't do this, unless you have to
+
+Note:
+
+Docker makes it possible to decommission legacy platforms while reducing the
+attack area (load balancer in front helps).
+
+The legacy applications get all the benefits of immutable releases, stable
+deployments, etc.
