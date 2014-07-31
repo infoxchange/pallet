@@ -166,6 +166,50 @@
           <h1>Pallet</h1>
           <h2>an interface for Docker containers</h2>
           <h3>https://github.com/infoxchange/pallet</h3>
+
+          <aside class="notes" data-markdown>
+            <script type='text/template'>
+              * Pallet defines:
+                * standard ports for things like app servers
+                * standard internal mountpoints for external storage
+                * standard environment variables for services, i.e. postgres,
+                  memcache; and
+                * standard entrypoints, i.e. docker run deploy,
+                  docker run serve
+            </script>
+          </aside>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+           ## What's in **deploy**?
+            * database migrations
+            * loading fixtures
+            * install static content to static web server (CDN, Ceph, nginx,
+              etc.)
+          </script>
+        </section>
+
+        <section data-markdown>
+          <script type='text/template'>
+           ## What's in **serve**?
+            * Start app server
+            * Starting supporting services, e.g. Celery
+          </script>
+        </section>
+
+        <section>
+          <h2>Keep it lean</h2>
+
+          <aside class="notes" data-markdown>
+            <script type='text/template'>
+              * We want to do as little as possible in these two steps,
+                anything that can be done in the build should be done in the
+                build.
+              * i.e. installing deps
+              * LESS -> CSS
+            </script>
+          </aside>
         </section>
 
 
