@@ -92,13 +92,80 @@
           </aside>
 
           <aside class="notes" data-markdown>
-            </script type='text/template'>
+            <script type='text/template'>
               * Guaranteed identical releases to test, staging and production
               * Ability to deploy while PyPi it down
               * Rapid recovery after failure
               * Rapid scaleout when required
             </script>
           </aside>
+        </section>
+
+        <section
+          data-background="http://i.ytimg.com/vi/Q5POuMHxW-0/maxresdefault.jpg">
+
+          <aside class="notes" data-markdown>
+            <script type='text/template'>
+              * Docker is a framework for providing isolated containers on
+                technology such as LXC
+              * They can be memory and CPU constrained using the same cgroup
+                commands
+              * Containers are versioned and stored in a repository from where
+                they can be pushed and pulled
+              * Containers are immutable!
+              * Containers can access external storage when configured to
+                do so, enabling persistant storage
+              * Containers are assigned local IPs only routable from the host
+                but docker will forward ports exposed ports only when
+                configured to do so
+            </script>
+          </aside>
+        </section>
+
+        <section>
+          FIXME: layering diagram
+
+          <aside class="notes" data-markdown>
+            <script type='text/template'>
+              * Docker containers are built up of layers
+              * You have your base system, application dependencies and
+                application, all immutable.
+              * The files created by the running container will not exist when
+                the container is cleaned up unless they were written to
+                persistant storage.
+              * This means your containers start in a known good state
+              * You can share a container between different servers: test,
+                staging, prod, and even start it on multiple servers to scale
+                out
+            </script>
+          </aside>
+        </section>
+
+        <section data-background="https://farm1.staticflickr.com/163/340528570_8c2cb842dd_b_d.jpg">
+          <h2>But there's no standards!</h2>
+
+          <aside class="credit">
+            Standard Oil &copy; 2006 Greenlight Designs CC-BY-NC
+          </aside>
+
+          <aside class="notes" data-markdown>
+            <script type='text/template'>
+              * Docker does not provide a standardised interface
+              * What ports do I used, where do I store my data
+              * How do I do maintenance tasks?
+              * We can borrow a lot of ideas here from 12factor, Heroku
+                and Openshift
+            </script>
+          </aside>
+
+        </section>
+
+        <section
+          data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg"
+          style="color:#e11;">
+          <h1>Pallet</h1>
+          <h2>an interface for Docker containers</h2>
+          <h3>https://github.com/infoxchange/pallet</h3>
         </section>
 
 
