@@ -74,6 +74,34 @@ EXPOSE 8000
 
 
 
+## Settings
+
+
+
+```python
+from dj_database_url import parse
+DATABASES = {
+	'default': parse(os.environ['DB_DEFAULT_URL']),
+}
+```
+
+
+```python
+LOGGING = ... # TODO
+```
+
+
+```python
+USE_X_FORWARDED_HOST = True
+SSL_HEADER_WHATEVER = ... # TODO
+```
+
+
+```python
+# static dir
+```
+
+
 ## Forklift
 
 Note:
