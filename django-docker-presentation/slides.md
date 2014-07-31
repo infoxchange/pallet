@@ -102,6 +102,30 @@ SSL_HEADER_WHATEVER = ... # TODO
 ```
 
 
+
+## Running the container
+
+
+```
+docker run \
+  -p 8000:8000 \
+  -e
+DB_DEFAULT_URL=postgres://myapp:pass@db3:5432/myapp_db
+\
+  -e SITE_DOMAIN=myapp-staging.company.com \
+  -e SITE_PROTO=https \
+  -e ENVIRONMENT=staging \
+  -e
+ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
+\
+  -v /mnt/docker-storage/myapp:/storage \
+  -h WHY_ARE_YOU_STILL_READING_THIS \
+  myapp \
+  serve
+```
+
+
+
 ## Forklift
 
 Note:
