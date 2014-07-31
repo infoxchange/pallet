@@ -86,7 +86,7 @@
 
         <section
           data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg">
-          <h2 style="color:steelblue;">Reproducable deployments</h2>
+          <h2 style="color:steelblue;">Reproducible deployments</h2>
 
           <aside class="credit" style="color:steelblue;">
             Forklift bot &copy; 2014 Legozilla CC-BY-NC-SA
@@ -276,7 +276,8 @@
           <section data-markdown>
             <script type='text/template'>
               ```
-              RUN echo "__version__ = \"`git describe`\"" > myapp/__version__.py
+              RUN echo "__version__ = \"`git describe`\"" \
+                > myapp/__version__.py
 
               RUN ./invoke.sh install
 
