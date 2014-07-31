@@ -5,9 +5,9 @@
 ```
 FROM debian/ubuntu/fedora/etc.
 RUN apt-get -qq update && apt-get -qq install \
-	git mercurial \
-	python python-virtualenv python-pip \
-	...
+  git mercurial \
+  python python-virtualenv python-pip \
+  ...
 ```
 
 Note:
@@ -31,7 +31,7 @@ Docker isn't guaranteed to be isolated from `root` inside the container.
 ```
 ADD requirements.txt /app/requirements.txt
 RUN virtualenv python_env && \
-	pip install -r requirements.txt
+  pip install -r requirements.txt
 
 ADD . /app
 ```
@@ -46,7 +46,7 @@ allows to skip the slow download & install process.
 VOLUME ["/static", "/storage"]
 
 RUN mkdir -p /static /storage && \
-	chown -R app /static /storage
+  chown -R app /static /storage
 ```
 
 Note:
@@ -81,7 +81,7 @@ EXPOSE 8000
 ```python
 from dj_database_url import parse
 DATABASES = {
-	'default': parse(os.environ['DB_DEFAULT_URL']),
+  'default': parse(os.environ['DB_DEFAULT_URL']),
 }
 ```
 
