@@ -1,3 +1,79 @@
+## docker build
+
+
+
+```
+FROM debian/ubuntu/fedora/etc.
+RUN apt-get -qq update && apt-get -qq install \
+	git mercurial \
+	python python-virtualenv python-pip \
+	...
+```
+
+Note:
+
+Package installation step will be cached. For security updates, this needs to
+be rebuilt from scratch, bringing in the latest updates.
+
+Your choice of version control, extra packages, etc.
+
+
+```
+RUN useradd -d /app -r app
+WORKDIR /app
+```
+
+Note:
+
+Docker isn't guaranteed to be isolated from `root` inside the container.
+
+
+```
+ADD requirements.txt /app/requirements.txt
+RUN virtualenv python_env && \
+	pip install -r requirements.txt
+
+ADD . /app
+```
+
+Note:
+
+Python dependencies change less often than code, so caching them separately
+allows to skip the slow download & install process.
+
+
+```
+VOLUME ["/static", "/storage"]
+
+RUN mkdir -p /static /storage && \
+	chown -R app /static /storage
+```
+
+Note:
+
+Volumes aren't there on build, so don't write anything there in Dockerfile.
+
+When running the container, permissions aren't guaranteed, so `chown` again.
+This requires not running as `app` from the start, unfortunately.
+
+
+```
+RUN echo "__version__ = '`git describe`'" \
+> myapp/__version__.py
+
+RUN ./invoke.sh install
+
+ENTRYPOINT ["./invoke.sh"]
+
+EXPOSE 8000
+```
+
+
+
+## TODO: invoke.sh goes here
+
+
+
 ## Forklift
 
 Note:
