@@ -109,11 +109,6 @@ if MY_SITE_DOMAIN:
 ```
 
 
-```python
-# static dir
-```
-
-
 
 ## Running the container
 
