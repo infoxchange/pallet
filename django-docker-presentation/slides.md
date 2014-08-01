@@ -1,3 +1,181 @@
+# Running Django on Docker
+### a workflow and code
+
+Alexey Kotlyarov
+
+Danielle Madeley
+
+[ixa.io](http://ixa.io)
+
+
+
+<!-- .slide: data-background="https://farm4.staticflickr.com/3489/3866788424_3ee4a00967_b_d.jpg"-->
+## The problem
+
+credit: Pallets &copy; 2014 philHendley, CC-BY-NC-SA
+
+
+
+<!-- .slide: data-background="https://farm1.staticflickr.com/207/459608453_4d9c18359b_o_d.jpg"-->
+## A diverse world of applications
+
+credit: 4-in-a-box &copy; 2007 cloud_nine, CC-BY-NC-SA
+
+Note:
+
+You have:
+
+* different dependencies between applications
+* different *versions* of dependencies between applications
+* different setups, i.e. choice of app server
+* different package managers
+* different Python versions
+* compiled sources
+* multiple languages
+* specific deps you can't control with virtualenv
+
+
+
+<!-- .slide: data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg"-->
+## Reproducible deployments
+
+credit: Forklift bot &copy; 2014 Legozilla CC-BY-NC-SA
+
+Note:
+
+* Guaranteed identical releases to test, staging and production
+* Ability to deploy while PyPI it down
+* Rapid recovery after failure
+* Rapid scaleout when required
+
+
+<!-- .slide: data-background="http://i.ytimg.com/vi/Q5POuMHxW-0/maxresdefault.jpg"-->
+
+Note:
+* Docker is a framework for providing isolated containers on
+  technology such as LXC
+* They can be memory and CPU constrained using the same cgroup
+  commands
+* Containers are versioned and stored in a repository from where
+  they can be pushed and pulled
+* Containers are immutable!
+* Containers can access external storage when configured to
+  do so, enabling persistant storage
+* Containers are assigned local IPs only routable from the host
+  but docker will forward ports exposed ports only when
+  configured to do so
+
+
+
+<!-- .slide: data-background="#cfc"-->
+![Layers](layers-diagram.svg)
+
+Note:
+
+* Docker containers are built up of layers
+* You have your base system, application dependencies and
+  application, all immutable.
+* The files created by the running container will not exist when
+  the container is cleaned up unless they were written to
+  persistant storage.
+* This means your containers start in a known good state
+* You can share a container between different servers: test,
+  staging, prod, and even start it on multiple servers to scale
+  out
+
+
+
+<!-- .slide: data-background="https://farm1.staticflickr.com/163/340528570_8c2cb842dd_b_d.jpg"-->
+## But there's no standards!
+
+credit: Standard Oil &copy; 2006 Greenlight Designs CC-BY-NC
+
+Note:
+* Docker does not provide a standardised interface
+* What ports do I use, where do I store my data?
+* How do I do maintenance tasks?
+* We can borrow a lot of ideas here from 12factor, Heroku
+  and Openshift
+
+
+
+<!-- .slide: data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg"-->
+# Pallet
+## An interface for Docker containers
+### https://github.com/infoxchange/pallet
+
+Note:
+Pallet defines:
+* standard ports for things like app servers
+* standard internal mountpoints for external storage
+* standard environment variables for services, i.e. postgres,
+  memcache; and
+* standard entrypoints, i.e. docker run deploy,
+  docker run serve
+
+
+
+## What's in **deploy**?
+* database migrations
+* loading fixtures
+* install static content to static web server (CDN, Ceph, nginx,
+  etc.)
+
+
+
+## What's in **serve**?
+* Start app server
+* Starting supporting services, e.g. Celery
+
+
+
+## Keep it lean
+
+Note:
+* We want to do as little as possible in these two steps,
+  anything that can be done in the build should be done in the
+  build.
+* i.e. installing deps
+* LESS -> CSS
+
+
+<!-- .slide: data-background="#3F3F3F"-->
+```bash
+# default parameters
+: ${APP_USER:=app}
+: ${WEB_CONCURRENCY:=1}
+export WEB_CONCURRENCY
+
+if [ "x$(whoami)" != "x$APP_USER" ]; then
+    # ensure we own our storage
+    chown -R "$APP_USER" /static /storage
+
+    # Call back into ourselves as the app user
+    exec sudo -sE -u "$APP_USER" -- "$@"
+else
+    . ./startenv
+    case "$1" in
+        deploy)
+            shift 1  # consume command from $@
+            ./manage.py migrate "$@"
+            ;;
+
+        serve)
+            gunicorn -w "$WEB_CONCURRENCY" \
+              -b 0.0.0.0:8000 "${APP}.wsgi:application"
+            ;;
+
+        *)
+            ./manage.py "$@"
+            ;;
+    esac
+fi
+            </code></pre>
+        </section>
+```
+
+
+
 ## docker build
 
 
