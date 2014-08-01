@@ -52,6 +52,7 @@ Note:
 * Rapid scaleout when required
 
 
+
 <!-- .slide: data-background="http://i.ytimg.com/vi/Q5POuMHxW-0/maxresdefault.jpg"-->
 
 Note:
@@ -157,6 +158,14 @@ if [ "x$(whoami)" != "x$APP_USER" ]; then
     # Call back into ourselves as the app user
     exec sudo -sE -u "$APP_USER" -- "$@"
 else
+# ...
+```
+
+
+<!-- .slide: data-background="#3F3F3F"-->
+```
+# ...
+else
     . ./startenv
     case "$1" in
         deploy)
@@ -174,8 +183,6 @@ else
             ;;
     esac
 fi
-            </code></pre>
-        </section>
 ```
 
 
