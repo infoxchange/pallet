@@ -106,7 +106,7 @@ Note:
 <!-- .slide: data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg" class="bg-white" -->
 # Pallet
 ## An interface for Docker containers
-### https://github.com/infoxchange/pallet
+### github.com/infoxchange/pallet
 
 Note:
 Pallet defines:
@@ -331,12 +331,15 @@ ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
 # Forklift
 ### a tool for loading pallets
 
+github.com/infoxchange/docker-forklift
+
 Note:
 
 * Forklift is a tool for running pallets
 * Not specific to Docker (but mostly for Docker today)
 * Define required services and Forklift will provide them
-* Install PostgreSQL locally, or get a Docker image of it
+* Install PostgreSQL locally, or start Docker image of it
+* Written in Python (3)
 
 
 
@@ -479,3 +482,12 @@ attack area (load balancer in front helps).
 
 The legacy applications get all the benefits of immutable releases, stable
 deployments, etc.
+
+
+
+# Fin ;-P
+### Questions?
+
+github.com/infoxchange/pallet
+
+github.com/infoxchange/docker-forklift
