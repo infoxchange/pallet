@@ -253,7 +253,7 @@ This requires not running as `app` from the start, unfortunately.
 <!-- .slide: data-background="#3F3F3F" -->
 ```
 RUN echo "__version__ = '`git describe`'" \
-> myapp/__version__.py
+  > myapp/__version__.py
 
 RUN ./invoke.sh install
 
@@ -276,7 +276,7 @@ EXPOSE 8000
 ```python
 from dj_database_url import parse
 DATABASES = {
-  'default': parse(os.environ['DB_DEFAULT_URL']),
+    'default': parse(os.environ['DB_DEFAULT_URL']),
 }
 ```
 
