@@ -2,6 +2,7 @@
 
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 FROM debian/ubuntu/fedora/etc.
 RUN apt-get -qq update && apt-get -qq install \
@@ -18,6 +19,7 @@ be rebuilt from scratch, bringing in the latest updates.
 Your choice of version control, extra packages, etc.
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 RUN useradd -d /app -r app
 WORKDIR /app
@@ -28,6 +30,7 @@ Note:
 Docker isn't guaranteed to be isolated from `root` inside the container.
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 ADD requirements.txt /app/requirements.txt
 RUN virtualenv python_env && \
@@ -42,6 +45,7 @@ Python dependencies change less often than code, so caching them separately
 allows to skip the slow download & install process.
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 VOLUME ["/static", "/storage"]
 
@@ -57,6 +61,7 @@ When running the container, permissions aren't guaranteed, so `chown` again.
 This requires not running as `app` from the start, unfortunately.
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 RUN echo "__version__ = '`git describe`'" \
 > myapp/__version__.py
@@ -74,10 +79,11 @@ EXPOSE 8000
 
 
 
-## Settings
+## Django settings.py
 
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```python
 from dj_database_url import parse
 DATABASES = {
@@ -86,6 +92,7 @@ DATABASES = {
 ```
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```python
 # Logging is complex
 LOGGING['handlers']['logstash'] = {
@@ -100,7 +107,9 @@ LOGGING['handlers']['logstash'] = {
 ```
 
 
+<!-- .slide: data-background="#3F3F3F" -->
 ```python
+# Trust our nginx server
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 MY_SITE_DOMAIN = os.environ.get('SITE_DOMAIN')
@@ -113,6 +122,8 @@ if MY_SITE_DOMAIN:
 ## Running the container
 
 
+
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 docker run \
   -p 8000:8000 \
@@ -133,7 +144,12 @@ ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
 
 
 
-## Forklift
+# Urgh!
+
+
+
+# Forklift
+### a tool for loading pallets
 
 Note:
 
@@ -143,22 +159,29 @@ Note:
 * Install PostgreSQL locally, or get a Docker image of it
 
 
-## Forklift
 
+<!-- .slide: data-background="#3F3F3F" -->
+### myapp/forklift.yaml
 ```yaml
-# myapp/forklift.yaml
 services:
 - postgres
 - elasticsearch
 ```
 
+
+
+<!-- .slide: data-background="#3F3F3F" -->
 ```bash
 forklift myapp serve
 ```
 
 
+
 ## Developing with Forklift
 
+
+
+<!-- .slide: data-background="#3F3F3F" -->
 ```bash
 forklift ./invoke.sh serve
 forklift ./manage.py test
@@ -176,8 +199,14 @@ Caveats:
   same version.
 
 
-## Inspecting a container
 
+## Poking around inside containers
+
+(aka troubleshooting)
+
+
+
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 forklift --mount-root /tmp/myapp myapp sshd
 ```
@@ -199,6 +228,7 @@ application directly on your host. (PHP, I'm looking at you.)
 In the future, `cgexec` might replace some of the nastiness here.
 
 
+
 ## Extending Forklift
 
 Note:
@@ -209,7 +239,8 @@ Can be extended to run pallets on OpenShift or Heroku?
 
 
 
-## IXDjango - pallet configuration for Django
+# IXDjango
+### pallet configuration for Django
 
 ```bash
 pip install IXDjango
@@ -230,14 +261,17 @@ Also provides `manage.py deploy`.
 
 ## Continuous integration
 
+
+
+<!-- .slide: data-background="#3F3F3F" -->
 ```
 forklift --cleanroom myapp test
 ```
 
 Note:
 
-`test` command runs `./manage.py test` or whatever it is mapped to (Lettuce
-tests, Nose, etc.)
+`test` command runs `./manage.py test` or whatever it is mapped to
+via your entrypoint (Lettuce tests, Nose, etc.)
 
 Forklift `--cleanroom` flag starts every required services in a separate
 container to ensure the tests don't interfere with any other running
@@ -252,6 +286,8 @@ Docker (hopefully fixed now?).
 
 ## Legacy applications
 
+Note:
+
 Docker is ideal for doing nasty things...
 
 ...reproducibly
@@ -260,8 +296,6 @@ Docker is ideal for doing nasty things...
 * Apache 1.3
 
 Please don't do this, unless you have to
-
-Note:
 
 Docker makes it possible to decommission legacy platforms while reducing the
 attack area (load balancer in front helps).
