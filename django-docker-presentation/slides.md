@@ -63,7 +63,7 @@ Note:
   they can be pushed and pulled
 * Containers are immutable!
 * Containers can access external storage when configured to
-  do so, enabling persistant storage
+  do so, enabling persistent storage
 * Containers are assigned local IPs only routable from the host
   but docker will forward ports exposed ports only when
   configured to do so
@@ -179,6 +179,9 @@ WORKDIR /app
 Note:
 
 Docker isn't guaranteed to be isolated from `root` inside the container.
+
+Even if no harm is made to the host, an attacker can completely compromise the
+container itself if they have `root` privileges.
 
 
 <!-- .slide: data-background="#3F3F3F" -->
