@@ -1,12 +1,9 @@
 # Running Django on Docker
 ### a workflow and code
 
-Alexey Kotlyarov
+Alexey Kotlyarov • Danielle Madeley
 
-Danielle Madeley
-
-[ixa.io](http://ixa.io)
-
+Infoxchange
 
 
 <!-- .slide: data-background="https://farm4.staticflickr.com/3489/3866788424_3ee4a00967_b_d.jpg"-->
@@ -139,48 +136,14 @@ Note:
 * LESS -> CSS
 
 
-<!-- .slide: data-background="#3F3F3F"-->
-```bash
-# default parameters
-: ${APP_USER:=app}
-: ${WEB_CONCURRENCY:=1}
-export WEB_CONCURRENCY
 
-if [ "x$(whoami)" != "x$APP_USER" ]; then
-    # ensure we own our storage
-    chown -R "$APP_USER" /static /storage
-
-    # Call back into ourselves as the app user
-    exec sudo -sE -u "$APP_USER" -- "$@"
-else
-    . ./startenv
-    case "$1" in
-        deploy)
-            shift 1  # consume command from $@
-            ./manage.py migrate "$@"
-            ;;
-
-        serve)
-            gunicorn -w "$WEB_CONCURRENCY" \
-              -b 0.0.0.0:8000 "${APP}.wsgi:application"
-            ;;
-
-        *)
-            ./manage.py "$@"
-            ;;
-    esac
-fi
-            </code></pre>
-        </section>
-```
-
-
-
-## docker build
+<!-- .slide: data-background="#3F3F3F" -->
+## $ docker build
 
 
 
 <!-- .slide: data-background="#3F3F3F" -->
+### Dockerfile
 ```
 FROM debian/ubuntu/fedora/etc.
 RUN apt-get -qq update && apt-get -qq install \
@@ -253,7 +216,39 @@ EXPOSE 8000
 
 
 
-## TODO: invoke.sh goes here
+<!-- .slide: data-background="#3F3F3F" class="small" -->
+### invoke.sh
+```bash
+# default parameters
+: ${APP_USER:=app}
+: ${WEB_CONCURRENCY:=1}
+export WEB_CONCURRENCY
+
+if [ "x$(whoami)" != "x$APP_USER" ]; then
+    # ensure we own our storage
+    chown -R "$APP_USER" /static /storage
+
+    # Call back into ourselves as the app user
+    exec sudo -sE -u "$APP_USER" -- "$@"
+else
+    . ./startenv
+    case "$1" in
+        deploy)
+            shift 1  # consume command from $@
+            ./manage.py migrate "$@"
+            ;;
+
+        serve)
+            gunicorn -w "$WEB_CONCURRENCY" \
+              -b 0.0.0.0:8000 "${APP}.wsgi:application"
+            ;;
+
+        *)
+            ./manage.py "$@"
+            ;;
+    esac
+fi
+```
 
 
 
@@ -349,9 +344,7 @@ services:
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```bash
-forklift myapp serve
-```
+### $ forklift myapp serve
 
 
 
@@ -360,10 +353,9 @@ forklift myapp serve
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```bash
-forklift ./invoke.sh serve
-forklift ./manage.py test
-```
+### $ forklift ./invoke.sh serve
+
+### $ forklift ./manage.py test
 
 Note:
 
@@ -385,9 +377,7 @@ Caveats:
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```
-forklift --mount-root /tmp/myapp myapp sshd
-```
+#### $ forklift --mount-root /tmp/myapp myapp sshd
 
 Note:
 
@@ -427,6 +417,8 @@ pip install IXDjango
 ```python
 from ixdjango.docker_settings import *
 ```
+
+github.com/infoxchange/ixdjango
 
 Note:
 
