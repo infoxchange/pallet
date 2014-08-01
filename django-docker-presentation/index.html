@@ -86,7 +86,7 @@
 
         <section
           data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg">
-          <h2 style="color:steelblue;">Reproducable deployments</h2>
+          <h2 style="color:steelblue;">Reproducible deployments</h2>
 
           <aside class="credit" style="color:steelblue;">
             Forklift bot &copy; 2014 Legozilla CC-BY-NC-SA
@@ -213,80 +213,6 @@
           </aside>
         </section>
 
-        <section>
-          <section>
-            <h2>Building a Python application container</h2>
-            <!-- TODO: I've just realised that we wanted to present this as live coding.
-            Can be salvaged anyway? -->
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ```
-              FROM debian/ubuntu/fedora/etc.
-              RUN apt-get -qq update && apt-get -qq install \
-                git mercurial \
-                python python-virtualenv python-pip \
-                ...
-              ```
-            </script>
-
-            <aside class="notes" data-markdown>
-              <script type='text/template'>
-                * This will be cached. For security updates, this needs to be rebuilt
-                  from scratch, bringing in the latest updates.
-                * Unrestricted choice of version control, extra packages, etc.
-              </script>
-            </aside>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ```
-              RUN useradd -d /app -r app
-              WORKDIR /app
-              ```
-            </script>
-
-            <aside class="notes" data-markdown>
-              <script type='text/template'>
-                * Docker isn't guaranteed to be isolated from `root` inside the container.
-              </script>
-            </aside>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ```
-              ADD requirements.txt /app/requirements.txt
-              RUN virtualenv python_env && pip install -r requirements.txt
-
-              ADD . /app
-              ```
-            </script>
-
-            <aside class="notes" data-markdown>
-              <script type='text/template'>
-                * Python dependencies change less often than code, so caching them separately
-                  allows to skip the slow download & install process.
-              </script>
-            </aside>
-          </section>
-
-          <section data-markdown>
-            <script type='text/template'>
-              ```
-              RUN echo "__version__ = \"`git describe`\"" > myapp/__version__.py
-
-              RUN ./invoke.sh install
-
-              ENTRYPOINT ["./invoke.sh"]
-
-              EXPOSE 8000
-              ```
-            </script>
-          </section>
-        </section>
 
         <section data-background="#3F3F3F">
           <pre><code style="font-size:15pt;">

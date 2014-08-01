@@ -1,3 +1,138 @@
+## docker build
+
+
+
+```
+FROM debian/ubuntu/fedora/etc.
+RUN apt-get -qq update && apt-get -qq install \
+  git mercurial \
+  python python-virtualenv python-pip \
+  ...
+```
+
+Note:
+
+Package installation step will be cached. For security updates, this needs to
+be rebuilt from scratch, bringing in the latest updates.
+
+Your choice of version control, extra packages, etc.
+
+
+```
+RUN useradd -d /app -r app
+WORKDIR /app
+```
+
+Note:
+
+Docker isn't guaranteed to be isolated from `root` inside the container.
+
+
+```
+ADD requirements.txt /app/requirements.txt
+RUN virtualenv python_env && \
+  pip install -r requirements.txt
+
+ADD . /app
+```
+
+Note:
+
+Python dependencies change less often than code, so caching them separately
+allows to skip the slow download & install process.
+
+
+```
+VOLUME ["/static", "/storage"]
+
+RUN mkdir -p /static /storage && \
+  chown -R app /static /storage
+```
+
+Note:
+
+Volumes aren't there on build, so don't write anything there in Dockerfile.
+
+When running the container, permissions aren't guaranteed, so `chown` again.
+This requires not running as `app` from the start, unfortunately.
+
+
+```
+RUN echo "__version__ = '`git describe`'" \
+> myapp/__version__.py
+
+RUN ./invoke.sh install
+
+ENTRYPOINT ["./invoke.sh"]
+
+EXPOSE 8000
+```
+
+
+
+## TODO: invoke.sh goes here
+
+
+
+## Settings
+
+
+
+```python
+from dj_database_url import parse
+DATABASES = {
+  'default': parse(os.environ['DB_DEFAULT_URL']),
+}
+```
+
+
+```python
+# Logging is complex
+LOGGING['handlers']['logstash'] = {
+    'level': 'DEBUG' if DEBUG else 'INFO',
+    'class': 'logging.handlers.SysLogHandler',
+    'address': (os.environ['SYSLOG_SERVER'],
+                int(os.environ['SYSLOG_PORT']))
+    'socktype': socket.SOCK_STREAM \
+                    if os.environ['SYSLOG_PROTO'] == 'tcp' \
+                    else socket.SOCK_DGRAM,
+}
+```
+
+
+```python
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+MY_SITE_DOMAIN = os.environ.get('SITE_DOMAIN')
+if MY_SITE_DOMAIN:
+    ALLOWED_HOSTS = (MY_SITE_DOMAIN,)
+```
+
+
+
+## Running the container
+
+
+```
+docker run \
+  -p 8000:8000 \
+  -e
+DB_DEFAULT_URL=postgres://myapp:pass@db3:5432/myapp_db
+\
+  -e SITE_DOMAIN=myapp-staging.company.com \
+  -e SITE_PROTO=https \
+  -e ENVIRONMENT=staging \
+  -e
+ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
+\
+  -v /mnt/docker-storage/myapp:/storage \
+  -h WHY_ARE_YOU_STILL_READING_THIS \
+  myapp \
+  serve
+```
+
+
+
 ## Forklift
 
 Note:
@@ -112,3 +247,24 @@ contending for port 8000 (not an issue in Docker).
 We have tried to build a CI application to test other container while being a
 containerised application itself, but ran into several weird bugs in early
 Docker (hopefully fixed now?).
+
+
+
+## Legacy applications
+
+Docker is ideal for doing nasty things...
+
+...reproducibly
+
+* mod_python
+* Apache 1.3
+
+Please don't do this, unless you have to
+
+Note:
+
+Docker makes it possible to decommission legacy platforms while reducing the
+attack area (load balancer in front helps).
+
+The legacy applications get all the benefits of immutable releases, stable
+deployments, etc.
