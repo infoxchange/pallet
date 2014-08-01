@@ -87,13 +87,25 @@ DATABASES = {
 
 
 ```python
-LOGGING = ... # TODO
+# Logging is complex
+LOGGING['handlers']['logstash'] = {
+    'level': 'DEBUG' if DEBUG else 'INFO',
+    'class': 'logging.handlers.SysLogHandler',
+    'address': (os.environ['SYSLOG_SERVER'],
+                int(os.environ['SYSLOG_PORT']))
+    'socktype': socket.SOCK_STREAM \
+                    if os.environ['SYSLOG_PROTO'] == 'tcp' \
+                    else socket.SOCK_DGRAM,
+}
 ```
 
 
 ```python
 USE_X_FORWARDED_HOST = True
-SSL_HEADER_WHATEVER = ... # TODO
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+MY_SITE_DOMAIN = os.environ.get('SITE_DOMAIN')
+if MY_SITE_DOMAIN:
+    ALLOWED_HOSTS = (MY_SITE_DOMAIN,)
 ```
 
 
