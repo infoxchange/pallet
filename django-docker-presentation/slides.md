@@ -387,7 +387,9 @@ Caveats:
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-#### $ forklift --mount-root /tmp/myapp myapp sshd
+```bash
+$ forklift --mount-root /tmp/myapp myapp sshd
+```
 
 Note:
 
@@ -444,7 +446,7 @@ Also provides `manage.py deploy`.
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```
+```bash
 forklift --cleanroom myapp test
 ```
 
