@@ -123,8 +123,8 @@
           </aside>
         </section>
 
-        <section>
-          FIXME: layering diagram
+        <section data-background="#cfc">
+          <img src="layers-diagram.svg"
 
           <aside class="notes" data-markdown>
             <script type='text/template'>
@@ -286,6 +286,40 @@
               ```
             </script>
           </section>
+        </section>
+
+        <section data-background="#3F3F3F">
+          <pre><code style="font-size:15pt;">
+# default parameters
+: ${APP_USER:=app}
+: ${WEB_CONCURRENCY:=1}
+export WEB_CONCURRENCY
+
+if [ "x$(whoami)" != "x$APP_USER" ]; then
+    # ensure we own our storage
+    chown -R "$APP_USER" /static /storage
+
+    # Call back into ourselves as the app user
+    exec sudo -sE -u "$APP_USER" -- "$@"
+else
+    . ./startenv
+    case "$1" in
+        deploy)
+            shift 1  # consume command from $@
+            ./manage.py migrate "$@"
+            ;;
+
+        serve)
+            gunicorn -w "$WEB_CONCURRENCY" \
+              -b 0.0.0.0:8000 "${APP}.wsgi:application"
+            ;;
+
+        *)
+            ./manage.py "$@"
+            ;;
+    esac
+fi
+            </code></pre>
         </section>
 
         <section
