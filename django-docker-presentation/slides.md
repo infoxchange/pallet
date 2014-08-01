@@ -9,14 +9,16 @@ Infoxchange
 <!-- .slide: data-background="https://farm4.staticflickr.com/3489/3866788424_3ee4a00967_b_d.jpg"-->
 ## The problem
 
-credit: Pallets &copy; 2014 philHendley, CC-BY-NC-SA
+<!-- .element: class="credit" -->
+Pallets &copy; 2014 philHendley, CC-BY-NC-SA
 
 
 
 <!-- .slide: data-background="https://farm1.staticflickr.com/207/459608453_4d9c18359b_o_d.jpg"-->
 ## A diverse world of applications
 
-credit: 4-in-a-box &copy; 2007 cloud_nine, CC-BY-NC-SA
+<!-- .element: class="credit" -->
+4-in-a-box &copy; 2007 cloud_nine, CC-BY-NC-SA
 
 Note:
 
@@ -36,7 +38,8 @@ You have:
 <!-- .slide: data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg"-->
 ## Reproducible deployments
 
-credit: Forklift bot &copy; 2014 Legozilla CC-BY-NC-SA
+<!-- .element: class="credit" -->
+Forklift bot &copy; 2014 Legozilla CC-BY-NC-SA
 
 Note:
 
@@ -44,6 +47,7 @@ Note:
 * Ability to deploy while PyPI it down
 * Rapid recovery after failure
 * Rapid scaleout when required
+
 
 
 <!-- .slide: data-background="http://i.ytimg.com/vi/Q5POuMHxW-0/maxresdefault.jpg"-->
@@ -85,7 +89,8 @@ Note:
 <!-- .slide: data-background="https://farm1.staticflickr.com/163/340528570_8c2cb842dd_b_d.jpg"-->
 ## But there's no standards!
 
-credit: Standard Oil &copy; 2006 Greenlight Designs CC-BY-NC
+<!-- .element: class="credit" -->
+Standard Oil &copy; 2006 Greenlight Designs CC-BY-NC
 
 Note:
 * Docker does not provide a standardised interface
@@ -205,7 +210,7 @@ This requires not running as `app` from the start, unfortunately.
 <!-- .slide: data-background="#3F3F3F" -->
 ```
 RUN echo "__version__ = '`git describe`'" \
-> myapp/__version__.py
+  > myapp/__version__.py
 
 RUN ./invoke.sh install
 
@@ -260,7 +265,7 @@ fi
 ```python
 from dj_database_url import parse
 DATABASES = {
-  'default': parse(os.environ['DB_DEFAULT_URL']),
+    'default': parse(os.environ['DB_DEFAULT_URL']),
 }
 ```
 
