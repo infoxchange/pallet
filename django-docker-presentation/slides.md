@@ -1,9 +1,11 @@
+<!-- .slide: class="title" -->
 # Running Django on Docker
-### a workflow and code
+## a workflow and code
 
 Alexey Kotlyarov • Danielle Madeley
 
-Infoxchange
+![Infoxchange](Infoxchange_logo_SMALL.png)
+
 
 
 <!-- .slide: data-background="https://farm4.staticflickr.com/3489/3866788424_3ee4a00967_b_d.jpg"-->
@@ -35,7 +37,7 @@ You have:
 
 
 
-<!-- .slide: data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg"-->
+<!-- .slide: data-background="https://farm3.staticflickr.com/2866/12861161125_5f980a921d_b_d.jpg" class="bg-dark" -->
 ## Reproducible deployments
 
 <!-- .element: class="credit" -->
@@ -101,7 +103,7 @@ Note:
 
 
 
-<!-- .slide: data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg"-->
+<!-- .slide: data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg" class="bg-white" -->
 # Pallet
 ## An interface for Docker containers
 ### https://github.com/infoxchange/pallet

@@ -37,6 +37,11 @@ body {
         font-size: 36pt;
     }
 
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
     ul, ol {
         text-align: left;
         line-height: 110%;
@@ -50,15 +55,18 @@ body {
         }
     }
 
-    .credit {
-        position: absolute;
-        top: 500px;
-        left: 800px;
-    }
-
     .bg-dark {
         color: #112;
         text-shadow: 2px 2px fade(white, 50%);
+
+        a {
+            color: #112;
+        }
+    }
+
+    .bg-white {
+        color: white;
+        text-shadow: 2px 2px #112;
     }
 
     .fragment.expand {
@@ -97,7 +105,26 @@ body {
     pre, code {
         font-size: 14pt;
     }
+
 }
+
+.title {
+    h1 {
+        font-size: 86pt;
+    }
+
+    h2 {
+        font-size: 52pt;
+    }
+}
+
+.credit {
+    position: absolute;
+    top: 500px;
+    left: 800px;
+    font-size: 12pt !important;
+}
+
 
 @import url(http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css);
 /* hack around broken something */
