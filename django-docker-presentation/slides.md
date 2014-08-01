@@ -88,8 +88,11 @@ Note:
 
 
 
-<!-- .slide: data-background="https://farm1.staticflickr.com/163/340528570_8c2cb842dd_b_d.jpg"-->
+<!-- .slide: data-background="https://farm1.staticflickr.com/163/340528570_8c2cb842dd_b_d.jpg" class="bg-white" -->
 ## But there's no standards!
+
+<!-- .element: class="fragment" -->
+12factor.net is a must read
 
 <!-- .element: class="credit" -->
 Standard Oil &copy; 2006 Greenlight Designs CC-BY-NC
@@ -106,7 +109,7 @@ Note:
 <!-- .slide: data-background="https://farm8.staticflickr.com/7394/13996065906_fddba4ec84_b_d.jpg" class="bg-white" -->
 # Pallet
 ## An interface for Docker containers
-### github.com/infoxchange/pallet
+github.com/infoxchange/pallet
 
 Note:
 Pallet defines:
@@ -145,7 +148,7 @@ Note:
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-## $ docker build
+## $ docker build .
 
 
 
@@ -182,6 +185,7 @@ Docker isn't guaranteed to be isolated from `root` inside the container.
 ```
 ADD requirements.txt /app/requirements.txt
 RUN virtualenv python_env && \
+  . python_env/bin/activate && \
   pip install -r requirements.txt
 
 ADD . /app
@@ -223,9 +227,11 @@ EXPOSE 8000
 
 
 
-<!-- .slide: data-background="#3F3F3F" class="small" -->
+<!-- .slide: data-background="#3F3F3F" -->
 ### invoke.sh
 ```bash
+#!/bin/sh
+
 # default parameters
 : ${APP_USER:=app}
 : ${WEB_CONCURRENCY:=1}
@@ -236,7 +242,13 @@ if [ "x$(whoami)" != "x$APP_USER" ]; then
     chown -R "$APP_USER" /static /storage
 
     # Call back into ourselves as the app user
-    exec sudo -sE -u "$APP_USER" -- "$@"
+    exec sudo -sE -u "$APP_USER" -- "$0" "$@"
+else
+```
+
+
+<!-- .slide: data-background="#3F3F3F" -->
+```bash
 else
     . ./startenv
     case "$1" in
@@ -299,23 +311,48 @@ if MY_SITE_DOMAIN:
 
 
 
+# IXDjango
+### pallet configuration for Django
+
+```bash
+pip install IXDjango
+```
+
+```python
+from ixdjango.docker_settings import *
+```
+
+github.com/infoxchange/ixdjango
+
+Note:
+
+Reads the required environment variables and provides the default database,
+logging, static settings, etc.
+
+Also provides `manage.py deploy`.
+
+
+
+# An example
+## (in Flask)
+
+github.com/danni/linux-conf-au-flask-tute/tree/dockerify
+
+
+
 ## Running the container
 
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```
+```bash
 docker run \
   -p 8000:8000 \
-  -e
-DB_DEFAULT_URL=postgres://myapp:pass@db3:5432/myapp_db
-\
+  -e DB_DEFAULT_URL=postgres://user:pass@db3:5432/myapp \
   -e SITE_DOMAIN=myapp-staging.company.com \
   -e SITE_PROTO=https \
   -e ENVIRONMENT=staging \
-  -e
-ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
-\
+  -e ELASTICSEARCH_URLS=http://elastic-1:9200/myapp \
   -v /mnt/docker-storage/myapp:/storage \
   -h WHY_ARE_YOU_STILL_READING_THIS \
   myapp \
@@ -324,10 +361,15 @@ ELASTICSEARCH_URLS=http://es-server-01:9200/myapp_index
 
 
 
+<!--- .slide: data-background="https://farm8.staticflickr.com/7174/6779621887_ab6fc1beb8_o_d.jpg" class="bg-white" -->
 # Urgh!
 
+<!-- .element: class="credit" -->
+Disgusted Orange &copy; 2011 Scott Wyngarden CC-BY-NC
 
 
+
+<!-- .slide: data-background="https://farm6.staticflickr.com/5522/11307418514_88b4e60bca_b_d.jpg" class="bg-white" -->
 # Forklift
 ### a tool for loading pallets
 
@@ -358,7 +400,11 @@ services:
 
 
 
+<!-- .slide: data-background="https://farm2.staticflickr.com/1227/5100314710_0e6bf11bf7_b_d.jpg" class="bg-white" -->
 ## Developing with Forklift
+
+<!-- .element: class="credit" -->
+101020-N-7103C-010 &copy; 2010 U.S. Pacific Fleet CC-BY-NC
 
 
 
@@ -387,9 +433,7 @@ Caveats:
 
 
 <!-- .slide: data-background="#3F3F3F" -->
-```bash
-$ forklift --mount-root /tmp/myapp myapp sshd
-```
+### $ forklift --mount-root /tmp/myapp myapp sshd
 
 Note:
 
@@ -409,7 +453,11 @@ In the future, `cgexec` might replace some of the nastiness here.
 
 
 
+<!-- .slide: data-background="https://farm1.staticflickr.com/25/45248567_063768c2ab_o_d.jpg" class="bg-white" -->
 ## Extending Forklift
+
+<!-- .element: class="credit" -->
+Forklift Warning! &copy; 2005 A.Currell CC-BY-NC
 
 Note:
 
@@ -419,25 +467,76 @@ Can be extended to run pallets on OpenShift or Heroku?
 
 
 
-# IXDjango
-### pallet configuration for Django
-
-```bash
-pip install IXDjango
-```
-
+<!-- .slide: data-background="#3F3F3F" -->
+### forklift.services.memcache
 ```python
-from ixdjango.docker_settings import *
-```
+@register('memcache')
+class Memcache(Service):
 
-github.com/infoxchange/ixdjango
+    providers = ('localhost', 'container')
+
+    DEFAULT_PORT = 11211
+
+    def __init__(self, key_prefix='', hosts=None):
+
+        self.key_prefix = key_prefix
+        self.hosts = hosts or []
+```
 
 Note:
+Forklift isn't pluggable yet
+Every service that's been written we've wanted in our master
+but PRs accepted :)
 
-Reads the required environment variables and provides the default database,
-logging, static settings, etc.
 
-Also provides `manage.py deploy`.
+<!-- .slide: data-background="#3F3F3F" -->
+```python
+    def environment(self):
+
+        return {
+            'MEMCACHE_HOSTS': '|'.join(self.hosts),
+            'MEMCACHE_PREFIX': self.key_prefix,
+        }
+
+    def available(self):
+        """
+        Check whether memcache is available
+        """
+
+        ...
+```
+
+
+<!-- .slide: data-background="#3F3F3F" -->
+```python
+    @classmethod
+    def localhost(cls, application_id):
+        """The default memcached provider"""
+
+        return cls(
+            key_prefix=application_id,
+            hosts=['localhost:{0}'.format(cls.DEFAULT_PORT)])
+```
+
+
+<!-- .slide: data-background="#3F3F3F" -->
+```python
+    @classmethod
+    @transient_provider
+    def container(cls, application_id):
+        """Memcached provided by a container."""
+
+        container = ensure_container(
+            image='fedora/memcached',
+            port=cls.DEFAULT_PORT,
+            application_id=application_id,
+        )
+
+        return cls(
+            key_prefix=application_id,
+            hosts=['localhost:{0}'.format(container.port)],
+        )
+```
 
 
 
@@ -466,6 +565,7 @@ Docker (hopefully fixed now?).
 
 
 
+<!-- .slide: data-background="tramtracks.jpg" class="bg-white" -->
 ## Legacy applications
 
 Note:
