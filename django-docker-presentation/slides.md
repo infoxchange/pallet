@@ -15,6 +15,8 @@ Alexey Kotlyarov • Danielle Madeley
 Pallets &copy; 2014 philHendley, CC-BY-NC-SA
 
 Note:
+DANNI
+
 Let's set some context
 
 
@@ -133,6 +135,8 @@ Note:
 github.com/infoxchange/pallet
 
 Note:
+ALEXEY
+
 Pallet defines:
 * standard ports for things like app servers
 * standard internal mountpoints for external storage
@@ -362,6 +366,9 @@ Also provides `manage.py deploy`.
 
 github.com/danni/linux-conf-au-flask-tute/tree/dockerify
 
+Note:
+DANNI
+
 
 
 ## Running the container
@@ -400,6 +407,7 @@ Disgusted Orange &copy; 2011 Scott Wyngarden CC-BY-NC
 github.com/infoxchange/docker-forklift
 
 Note:
+ALEXEY
 
 * Forklift is a tool for running pallets
 * Not specific to Docker (but mostly for Docker today)
@@ -574,6 +582,7 @@ forklift --cleanroom myapp test
 ```
 
 Note:
+DANNI
 
 `test` command runs `./manage.py test` or whatever it is mapped to
 via your entrypoint (Lettuce tests, Nose, etc.)
