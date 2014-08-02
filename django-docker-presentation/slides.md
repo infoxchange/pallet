@@ -14,6 +14,22 @@ Alexey Kotlyarov • Danielle Madeley
 <!-- .element: class="credit" -->
 Pallets &copy; 2014 philHendley, CC-BY-NC-SA
 
+Note:
+Let's set some context
+
+
+
+<!-- .slide: data-background="#cfc"-->
+![Web architecture](web-architecture.png)
+
+Note:
+
+This is an approximation of a typical web architecure
+
+
+<!-- .slide: data-background="#cfc"-->
+![App server](app-server-arch.png)
+
 
 
 <!-- .slide: data-background="https://farm1.staticflickr.com/207/459608453_4d9c18359b_o_d.jpg"-->
@@ -67,6 +83,11 @@ Note:
 * Containers are assigned local IPs only routable from the host
   but docker will forward ports exposed ports only when
   configured to do so
+
+
+
+<!-- .slide: data-background="#cfc"-->
+![App server with Docker](app-server-architecture-docker.png)
 
 
 
