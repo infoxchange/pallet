@@ -1,0 +1,137 @@
+body {
+    background: -webkit-radial-gradient(center, circle cover,
+                                lighten(green, 5%) 0%,
+                                darken(green, 7%) 100%);
+    background: -moz-radial-gradient(center, circle cover,
+                                lighten(green, 5%) 0%,
+                                darken(green, 7%) 100%);
+    color: white;
+}
+
+.reveal {
+    h1, h2, h3, h4 {
+        font-family: "Junction";
+        text-align: left;
+        line-height: 120%;
+    }
+
+    h1 {
+        font-size: 96pt;
+    }
+
+    h2 {
+        font-size: 78pt;
+    }
+
+    h3 {
+        font-size: 52pt;
+    }
+
+    h4 {
+        font-size: 36pt;
+    }
+
+    p, ul, ol {
+        font-family: "Cantarell";
+        font-weight: 500;
+        font-size: 36pt;
+    }
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    ul, ol {
+        text-align: left;
+        line-height: 110%;
+    }
+
+    .story {
+        text-align: left;
+
+        em {
+            font-weight: bold;
+        }
+    }
+
+    .bg-dark {
+        color: #112;
+        text-shadow: 2px 2px fade(white, 50%);
+
+        a {
+            color: #112;
+        }
+    }
+
+    .bg-white {
+        color: white;
+        text-shadow: 2px 2px #112;
+    }
+
+    .fragment.expand {
+        line-height: 0;
+
+        &.visible {
+            line-height: 100%;
+        }
+    }
+
+    pre {
+        box-shadow: none;
+
+        code {
+            max-height: none;
+            overflow: inherit;
+        }
+    }
+
+    pre, code {
+        font-size: 24pt;
+        font-family: "Source Code Pro";
+        line-height: 110%;
+    }
+
+    .white.breakout {
+        background-color: white;
+        color: #3F3F3F;
+        border-radius: 20px;
+        padding: 5px;
+    }
+}
+
+.small {
+    /* used for things where the default sizes are too big */
+    pre, code {
+        font-size: 14pt;
+    }
+
+}
+
+.title {
+    h1 {
+        font-size: 86pt;
+    }
+
+    h2 {
+        font-size: 52pt;
+    }
+}
+
+.credit {
+    position: fixed;
+    top: 500px;
+    left: 800px;
+    font-size: 12pt !important;
+}
+
+
+@import url(http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css);
+/* hack around broken something */
+[class^=icon-] {
+    line-height: normal !important;
+    vertical-align: baseline !important;
+    font-family: FontAwesome !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+}
