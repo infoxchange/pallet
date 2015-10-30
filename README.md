@@ -138,10 +138,10 @@ commands it runs:
   proxying the requests to the application, it SHOULD NOT trust the HTTP `Host`
   header. If the application is exposed to the users via HTTPS, it still MUST
   accept HTTP and not HTTPS, relying on Pallet proxy.
-* `ENVIRONMENT` - a string identifying the instance configuration. This is set
-  up by Pallet users, and is only expected to be understood by the application.
-  Typical use can be controlling the performance vs. logging output for test
-  and production instances.
+* `ENVIRONMENT` - a string (`dev_local`|`dev`|`test`|`uat`|`staging`|`prod`)
+  identifying the instance configuration. This is set up by Pallet users, and is 
+  only expected to be understood by the application. Typical use can be controlling
+  the performance vs. logging output for test and production instances. 
 
 The following environment variables MAY be provided for the serve phase only:
 
