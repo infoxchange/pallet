@@ -141,7 +141,7 @@ commands it runs:
 * `ENVIRONMENT` - a string (`dev_local`|`dev`|`test`|`uat`|`staging`|`prod`)
   identifying the instance configuration. This is set up by Pallet users, and is 
   only expected to be understood by the application. Typical use can be controlling
-  the performance vs. logging output for test and production instances. 
+  the performance vs. logging output for test and production instances.
 
 The following environment variables MAY be provided for the serve phase only:
 
