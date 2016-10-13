@@ -128,6 +128,11 @@ or a mail transfer agent, to the applications.
 Information about the instance configuration and required services is passed to
 the application via environment variables.
 
+Generally, the same environment variables are presented during the deploy
+and serve phases.  Pallet MAY present additional environment variables during
+the deploy phase, in which case the environment variable names will include
+the word 'DEPLOY'.
+
 ### Instance configuration
 
 Pallet MUST provide the following environment variables to all the application
@@ -179,6 +184,15 @@ server.
 Additional databases, such as legacy databases for particular applications to
 connect to, MAY be provided, using environment variables such as `DB_XXXX_URL`,
 where `XXXX` is an application-specific database name.
+
+Environment variable: `DB_DEPLOY_URL`. This is a
+[DJ-Database-URL](https://github.com/kennethreitz/dj-database-url)-style
+URL specifying alternate database information. Pallet MAY provide this
+environment variable. If provided, Pallet SHALL provide this variable only
+during the deploy phase.
+
+If `DB_DEPLOY_URL` is provided, the application SHOULD use this to connect to the
+database for the purposes of running database migrations.
 
 #### Elasticsearch
 
