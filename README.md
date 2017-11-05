@@ -1,7 +1,7 @@
 Pallet
 ======
 
-###A standard for deploying containerized applications
+### _A standard for deploying containerized applications_
 
 [Docker] enables running applications regardless of the language, framework and
 other underlying technologies they are using - via containers. However, thanks
