@@ -244,8 +244,8 @@ in which case an HTTP proxy service SHOULD be provided.
 Environment variables: `SYSLOG_SERVER`, `SYSLOG_HOST`, `SYSLOG_PROTO`: host,
 port and protocol (`tcp` or `udp`) to connect to a Syslog instance.
 
-The application SHOULD prefer logging events to the Syslog service rather than
-to the console.
+The application MAY send logging events to the Syslog service, but it SHOULD prefer
+logging events to the console (`STDOUT`/`STDERR` as appropriate)
 
 ### Storage
 
