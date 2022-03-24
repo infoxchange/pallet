@@ -140,9 +140,12 @@ commands it runs:
 
 * `SITE_PROTOCOL`, `SITE_DOMAIN` - respectively, the URL scheme (such as `http`
   or `https` and domain, as reachable by the application users. As Pallet is
-  proxying the requests to the application, it SHOULD NOT trust the HTTP `Host`
+  proxying the requests to the application, it MAY trust the HTTP `Host`
   header. If the application is exposed to the users via HTTPS, it still MUST
-  accept HTTP and not HTTPS, relying on Pallet proxy.
+  accept HTTP and not HTTPS, relying on Pallet proxy to do TLS encryption.
+  The application may be reachable on more than one domain-name, in which case
+  `SITE_DOMAIN` is a list of the individual domains, separated by a
+  pipe `|` character
 * `ENVIRONMENT` - a string (`dev_local`|`dev`|`test`|`uat`|`staging`|`prod`)
   identifying the instance configuration. This is set up by Pallet users, and is 
   only expected to be understood by the application. Typical use can be controlling
